@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <category-def name="org.toxsoft.skf.journals.releng.category" label="org.toxsoft.skf.journals.releng Category">
+      <description>
+         org.toxsoft.skf.journals.releng Category
+      </description>
+   </category-def>
+   <!-- <bundle id="org.toxsoft.skf.journals.lib"/> -->
+
+   <!-- sources -->
+   <!-- <bundle id="org.toxsoft.skf.journals.lib.source"/> -->
+
+</site>
