@@ -29,7 +29,7 @@ public class Activator
   /**
    * Returns the reference to the activator singleton.
    *
-   * @return {@link Activator} - the activator singleton
+   * @return {@link Activator} - the activator singleton.
    */
   public static Activator getInstance() {
     return instance;
