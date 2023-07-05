@@ -10,8 +10,7 @@ import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
 import org.toxsoft.core.tslib.av.opset.impl.OptionSetUtils;
 import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
-import org.toxsoft.core.tslib.bricks.time.impl.TimedList;
+import org.toxsoft.core.tslib.bricks.time.impl.*;
 import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.IListEdit;
 import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
@@ -25,7 +24,6 @@ import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.gui.glib.query.ISkQueryCancelProducer;
 import org.toxsoft.uskat.core.gui.glib.query.SkQueryUtils;
-import org.toxsoft.uskat.core.utils.SkTimedListUtils;
 
 /**
  * Реализация движка {@link IQueryEngine} для событий.
@@ -104,7 +102,7 @@ public class EventQueryEngine
           eventQtty += events.size();
         }
         aMonitor.setTaskName( String.format( MSG_PREPARE_EVENTS_VIEW, Integer.valueOf( eventQtty ) ) );
-        return SkTimedListUtils.uniteTimeporalLists( paramLists );
+        return TimeUtils.uniteTimeporaLists( paramLists );
       }
       if( query.state() == ESkQueryState.FAILED ) {
         throw new TsIllegalStateRtException( ERR_QUERY_EVENTS_FAILED, query.stateMessage() );
