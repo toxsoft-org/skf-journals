@@ -25,6 +25,7 @@ import org.toxsoft.core.tslib.av.impl.AvUtils;
 import org.toxsoft.core.tslib.bricks.events.change.IGenericChangeListener;
 import org.toxsoft.core.tslib.bricks.filter.ITsCombiFilterParams;
 import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
+import org.toxsoft.core.tslib.gw.skid.Skid;
 import org.toxsoft.core.tslib.utils.errors.TsException;
 import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
 import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
@@ -37,7 +38,6 @@ import org.toxsoft.skf.journals.e4.uiparts.engine.IJournalParamsPanel.ECurrentAc
 import org.toxsoft.uskat.core.api.users.ISkUser;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
@@ -200,7 +200,8 @@ public class AlarmsJournalPanel
 
       // выясняем текущего пользователя
 
-      ISkUser user = S5ConnectionUtils.getConnectedUser( connection.coreApi() );
+      Skid currUser = connection.coreApi().getCurrentUserInfo().userSkid();
+      ISkUser user = connection.coreApi().userService().getUser( currUser.strid() );
       String userName = user.nmName().trim().length() > 0 ? user.nmName() : user.login();
 
       IJasperReportConstants.LEFT_BOTTOM_STR_M5_ID.setValue( printContext.params(),
