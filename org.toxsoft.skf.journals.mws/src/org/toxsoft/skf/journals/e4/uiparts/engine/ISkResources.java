@@ -44,14 +44,18 @@ interface ISkResources {
    * {@link EventQueryEngine}
    */
   String MSG_INFO_QUERIENG_EVENTS = Messages.MSG_INFO_QUERIENG_EVENTS;
-  String MSG_PREPARE_EVENTS_VIEW  = "Подготовка к отображению %d событий: этап 1";
+  String MSG_PREPARE_EVENTS_QUERY = "Подготовка запроса событий";
+  String MSG_PREPARE_EVENTS_VIEW  = "Подготовка к отображению %d событий";
   String ERR_QUERY_EVENTS_FAILED  = "Ошибка выполнения запроса событий: %s";
+  String MSG_QUERIENG_CMDS        = "Запрос на выбранные команды...";
+  String MSG_PREPARE_CMDS_QUERY   = "Подготовка запроса команд";
+  String MSG_PREPARE_CMDS_VIEW    = "Подготовка к отображению %d команд";
 
   /**
    * {@link EventQueryEngine}
    */
   String MSG_INFO_QUERIENG_CMDS = Messages.MSG_INFO_QUERIENG_CMDS;
-  String MSG_PREPARE_CMDS_VIEW  = "Подготовка к отображению %d событий: этап 1";
+  String MSG_PREPARE_CMDS_VIEW1 = "Подготовка к отображению %d событий: этап 1";
   String ERR_QUERY_CMDS_FAILED  = "Ошибка выполнения запроса команд: %s";
 
   /**

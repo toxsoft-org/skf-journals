@@ -3,7 +3,6 @@ package org.toxsoft.skf.journals.e4.uiparts.main;
 import static org.toxsoft.skf.journals.e4.uiparts.ISkJournalsHardConstants.*;
 import static org.toxsoft.skf.journals.e4.uiparts.main.ISkResources.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,7 +40,6 @@ import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoCmdInfo;
 import org.toxsoft.uskat.core.api.users.ISkUser;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.gui.glib.query.SkQueryDialog;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
@@ -61,11 +59,6 @@ public class CommandsJournalPanel
   private static final String timestampFormatString = "dd.MM.yy HH:mm:ss"; //$NON-NLS-1$
 
   private static final DateFormat timestampFormat = new SimpleDateFormat( timestampFormatString );
-
-  /**
-   * Таймаут (мсек) запроса событий. < 0: бесконечно
-   */
-  private static final long CMD_QUERY_TIMEOUT = -1;
 
   IM5CollectionPanel<IDtoCompletedCommand> panel = null;
 
@@ -143,22 +136,14 @@ public class CommandsJournalPanel
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
     try {
-      SkQueryDialog progressDialog = new SkQueryDialog( getShell(), MSG_QUERIENG_CMDS, CMD_QUERY_TIMEOUT );
-      // fork = true, cancelable = true
-      progressDialog.run( true, true, aMonitor -> {
-        aMonitor.setTaskName( String.format( MSG_PREPARE_CMDS_QUERY ) );
-        IList<IDtoCompletedCommand> commands =
-            queryEngine.query( interval, allCommandsParams(), aMonitor, progressDialog );
-
-        aMonitor.setTaskName( String.format( MSG_PREPARE_CMDS_VIEW, Integer.valueOf( commands.size() ) ) );
-        display.syncExec( () -> commandProvider.items().setAll( commands ) );
-        display.syncExec( () -> panel.refresh() );
-      } );
+      IList<IDtoCompletedCommand> commands = queryEngine.query( interval, allCommandsParams() );
+      display.syncExec( () -> commandProvider.items().setAll( commands ) );
+      display.syncExec( () -> panel.refresh() );
     }
-    catch( InvocationTargetException | InterruptedException ex ) {
-      String error = (ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage());
+    catch( Throwable e ) {
+      String error = (e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
       TsDialogUtils.error( getShell(), error );
-      LoggerUtils.defaultLogger().error( ex );
+      LoggerUtils.defaultLogger().error( e );
     }
   }
 
@@ -167,31 +152,21 @@ public class CommandsJournalPanel
     ITimeInterval interval = paramsPanel.interval();
     IList<ConcerningEventsItem> selectedEvents = ((ConcerningEventsParams)paramsPanel.selectedParams()).eventItems();
     try {
-      SkQueryDialog progressDialog = new SkQueryDialog( getShell(), MSG_QUERIENG_CMDS, CMD_QUERY_TIMEOUT );
-      // fork = true, cancelable = true
-      progressDialog.run( true, true, aMonitor -> {
-        aMonitor.setTaskName( String.format( MSG_PREPARE_CMDS_QUERY ) );
-        // Поскольку метод queryEvents воспринимает пустые списки параметров и/или объектов как
-        // "запросить все и по всем"
-        // то тут проредим параметры фильтрованного запроса
-        ConcerningEventsParams selEvents = new ConcerningEventsParams();
-        for( ConcerningEventsItem item : selectedEvents ) {
-          if( item.eventIds().isEmpty() || item.strids().isEmpty() ) {
-            continue;
-          }
-          selEvents.addItem( item );
+      ConcerningEventsParams selEvents = new ConcerningEventsParams();
+      for( ConcerningEventsItem item : selectedEvents ) {
+        if( item.eventIds().isEmpty() || item.strids().isEmpty() ) {
+          continue;
         }
-        IList<IDtoCompletedCommand> commands = queryEngine.query( interval, selEvents, aMonitor, progressDialog );
-
-        aMonitor.setTaskName( String.format( MSG_PREPARE_CMDS_VIEW, Integer.valueOf( commands.size() ) ) );
-        display.syncExec( () -> commandProvider.items().setAll( commands ) );
-        display.syncExec( () -> panel.refresh() );
-      } );
+        selEvents.addItem( item );
+      }
+      IList<IDtoCompletedCommand> commands = queryEngine.query( interval, selEvents );
+      display.syncExec( () -> commandProvider.items().setAll( commands ) );
+      display.syncExec( () -> panel.refresh() );
     }
-    catch( InvocationTargetException | InterruptedException ex ) {
-      String error = (ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage());
+    catch( Throwable e ) {
+      String error = (e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
       TsDialogUtils.error( getShell(), error );
-      LoggerUtils.defaultLogger().error( ex );
+      LoggerUtils.defaultLogger().error( e );
     }
   }
 

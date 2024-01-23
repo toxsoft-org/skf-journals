@@ -2,28 +2,28 @@ package org.toxsoft.skf.journals.e4.uiparts.engine;
 
 import static org.toxsoft.skf.journals.e4.uiparts.engine.ISkResources.*;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
 import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
-import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
-import org.toxsoft.core.tslib.av.opset.impl.OptionSetUtils;
 import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.*;
+import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
+import org.toxsoft.core.tslib.bricks.time.impl.TimeUtils;
 import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.IListEdit;
 import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.gwid.GwidList;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
 import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.evserv.SkEvent;
-import org.toxsoft.uskat.core.api.hqserv.*;
+import org.toxsoft.uskat.core.api.hqserv.ESkQueryState;
+import org.toxsoft.uskat.core.api.hqserv.ISkQueryRawHistory;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.gui.glib.query.ISkQueryCancelProducer;
-import org.toxsoft.uskat.core.gui.glib.query.SkQueryUtils;
+import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
+import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
+
+import core.tslib.bricks.synchronize.ITsThreadExecutor;
 
 /**
  * Реализация движка {@link IQueryEngine} для событий.
@@ -57,9 +57,8 @@ public class EventQueryEngine
   // Реализация интерфейса IEventQueryEngine
   //
   @Override
-  public IList<SkEvent> query( ITimeInterval aInterval, IJournalQueryFilter aParams, IProgressMonitor aMonitor,
-      ISkQueryCancelProducer aCancelProducer ) {
-    TsNullArgumentRtException.checkNulls( aInterval, aParams, aMonitor, aCancelProducer );
+  public IList<SkEvent> query( ITimeInterval aInterval, IJournalQueryFilter aParams ) {
+    TsNullArgumentRtException.checkNulls( aInterval, aParams );
     if( aParams.items().isEmpty() ) {
       return IList.EMPTY;
     }
@@ -73,45 +72,58 @@ public class EventQueryEngine
       LoggerUtils.defaultLogger().info( "EventQueryEngine.query(...): gwid = %s", gwid.asString() );
     }
 
-    // Параметры запроса
-    IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
-        ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( EVENT_QUERY_TIMEOUT ) //
-    ) );
-    // Формирование запроса
-    ISkQueryRawHistory query = coreApi.hqService().createHistoricQuery( options );
-    try {
-      // Подготовка запроса
-      LoggerUtils.defaultLogger().info( "EventQueryEngine.query(...): prepare start..." );
-      IGwidList gwids2 = query.prepare( gwids );
-      LoggerUtils.defaultLogger().info( "EventQueryEngine.query(...): prepare finish. gwids2 size = %s",
-          gwids2.size() );
+    // Исполнитель запросов в одном потоке
+    ITsThreadExecutor threadExecutor = SkThreadExecutorService.getExecutor( coreApi );
+    // Настройка обработки результатов запроса
+    IListEdit<ITimedList<SkEvent>> queryResults = new ElemArrayList<>();
+    // Создание диалога прогресса выполнения запроса
+    SkAbstractQueryDialog<ISkQueryRawHistory> dialog =
+        new SkAbstractQueryDialog<>( shell, MSG_QUERIENG_CMDS, EVENT_QUERY_TIMEOUT, threadExecutor ) {
 
-      // Настройка обработки результатов запроса
-      // Интервал запроса
-      IQueryInterval interval =
-          new QueryInterval( EQueryIntervalType.CSCE, aInterval.startTime(), aInterval.endTime() );
-      // Выполнение запроса
-      SkQueryUtils.execQueryWithProgress( query, interval, aMonitor, aCancelProducer );
-      // Обработка результата
-      if( query.state() == ESkQueryState.READY ) {
-        int eventQtty = 0;
-        IListEdit<ITimedList<SkEvent>> paramLists = new ElemArrayList<>();
-        for( Gwid gwid : query.listGwids() ) {
-          ITimedList<SkEvent> events = query.get( gwid );
-          paramLists.add( events );
-          eventQtty += events.size();
-        }
-        aMonitor.setTaskName( String.format( MSG_PREPARE_EVENTS_VIEW, Integer.valueOf( eventQtty ) ) );
-        return TimeUtils.uniteTimeporaLists( paramLists );
-      }
-      if( query.state() == ESkQueryState.FAILED ) {
-        throw new TsIllegalStateRtException( ERR_QUERY_EVENTS_FAILED, query.stateMessage() );
-      }
-      // Пустой результат (ошибка)
-      return new TimedList<>();
+          @Override
+          protected ISkQueryRawHistory doCreateQuery( IOptionSetEdit aOptions ) {
+            return coreApi.hqService().createHistoricQuery( aOptions );
+          }
+
+          @Override
+          protected void doPrepareQuery( ISkQueryRawHistory aQuery ) {
+            // Подготовка запроса
+            aQuery.prepare( gwids );
+            aQuery.genericChangeEventer().addListener( aSource -> {
+              ISkQueryRawHistory q = (ISkQueryRawHistory)aSource;
+              switch( q.state() ) {
+                case PREPARED:
+                  getProgressMonitor().setTaskName( String.format( MSG_PREPARE_EVENTS_QUERY ) );
+                  break;
+                case READY:
+                  int cmdQtty = 0;
+                  for( Gwid gwid : aQuery.listGwids() ) {
+                    ITimedList<SkEvent> cmds = aQuery.get( gwid );
+                    queryResults.add( cmds );
+                    cmdQtty += cmds.size();
+                  }
+                  getProgressMonitor()
+                      .setTaskName( String.format( MSG_PREPARE_EVENTS_VIEW, Integer.valueOf( cmdQtty ) ) );
+                  break;
+                case FAILED:
+                  break;
+                case EXECUTING:
+                case CLOSED:
+                case UNPREPARED:
+                  break;
+                default:
+                  throw new TsNotAllEnumsUsedRtException();
+              }
+            } );
+          }
+        };
+    // Запуск выполнения запроса
+    dialog.executeQuery( new QueryInterval( EQueryIntervalType.CSCE, aInterval.startTime(), aInterval.endTime() ) );
+
+    if( dialog.query().state() == ESkQueryState.FAILED ) {
+      throw new TsIllegalStateRtException( ERR_QUERY_EVENTS_FAILED, dialog.query().stateMessage() );
     }
-    finally {
-      query.close();
-    }
+    // Результат
+    return TimeUtils.uniteTimeporaLists( queryResults );
   }
 }

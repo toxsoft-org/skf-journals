@@ -3,7 +3,6 @@ package org.toxsoft.skf.journals.e4.uiparts.main;
 import static org.toxsoft.skf.journals.e4.uiparts.ISkJournalsHardConstants.*;
 import static org.toxsoft.skf.journals.e4.uiparts.main.ISkResources.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,7 +49,6 @@ import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoEventInfo;
 import org.toxsoft.uskat.core.api.users.ISkUser;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.gui.glib.query.SkQueryDialog;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
@@ -292,62 +290,43 @@ public class EventsJournalPanel
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
     try {
-      SkQueryDialog progressDialog = new SkQueryDialog( getShell(), MSG_QUERIENG_EVENTS, EVENT_QUERY_TIMEOUT );
-      // fork = true, cancelable = true
-      progressDialog.run( true, true, aMonitor -> {
-        LoggerUtils.defaultLogger().info( "queryAllEvents(): start. queryEngine.query(...)" );
-
-        aMonitor.setTaskName( String.format( MSG_PREPARE_EVENTS_QUERY ) );
-        IList<SkEvent> events = queryEngine.query( interval, allEventsParams(), aMonitor, progressDialog );
-
-        aMonitor.setTaskName( String.format( MSG_PREPARE_EVENTS_VIEW, Integer.valueOf( events.size() ) ) );
-
-        LoggerUtils.defaultLogger().info( "queryAllEvents(): event size = %d", events.size() );
-        LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.items().addAll( events )" );
-        display.syncExec( () -> eventProvider.setItems( events ) );
-
-        LoggerUtils.defaultLogger().info( "queryAllEvents(): panel.refresh()" );
-        display.syncExec( () -> panel.refresh() );
-
-        LoggerUtils.defaultLogger().info( "queryAllEvents(): finish" );
-      } );
+      LoggerUtils.defaultLogger().info( "queryAllEvents(): queryEngine.query( interval, allEventsParams() )" );
+      IList<SkEvent> events = queryEngine.query( interval, allEventsParams() );
+      LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.setItems( events )" );
+      display.syncExec( () -> eventProvider.setItems( events ) );
+      LoggerUtils.defaultLogger().info( "queryAllEvents(): panel.refresh()" );
+      display.syncExec( () -> panel.refresh() );
     }
-    catch( InvocationTargetException | InterruptedException ex ) {
-      String error = (ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage());
+    catch( Throwable e ) {
+      String error = (e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
       TsDialogUtils.error( getShell(), error );
-      LoggerUtils.defaultLogger().error( ex );
+      LoggerUtils.defaultLogger().error( e );
     }
   }
 
   private void querySelectedEvents() {
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
-    IList<ConcerningEventsItem> selectedEvents = ((ConcerningEventsParams)paramsPanel.selectedParams()).eventItems();
     try {
-      SkQueryDialog progressDialog = new SkQueryDialog( getShell(), MSG_QUERIENG_EVENTS, EVENT_QUERY_TIMEOUT );
-      // fork = true, cancelable = true
-      progressDialog.run( true, true, aMonitor -> {
-        aMonitor.setTaskName( String.format( MSG_PREPARE_EVENTS_QUERY ) );
-        // Поскольку метод queryEvents воспринимает пустые списки параметров и/или объектов как
-        // "запросить все и по всем" то тут проредим параметры фильтрованного запроса
-        ConcerningEventsParams selEvents = new ConcerningEventsParams();
-        for( ConcerningEventsItem item : selectedEvents ) {
-          if( item.eventIds().isEmpty() || item.strids().isEmpty() ) {
-            continue;
-          }
-          selEvents.addItem( item );
+      IList<ConcerningEventsItem> selectedEvents = ((ConcerningEventsParams)paramsPanel.selectedParams()).eventItems();
+      ConcerningEventsParams selEvents = new ConcerningEventsParams();
+      for( ConcerningEventsItem item : selectedEvents ) {
+        if( item.eventIds().isEmpty() || item.strids().isEmpty() ) {
+          continue;
         }
-        IList<SkEvent> events = queryEngine.query( interval, selEvents, aMonitor, progressDialog );
-
-        aMonitor.setTaskName( String.format( MSG_PREPARE_EVENTS_VIEW, Integer.valueOf( events.size() ) ) );
-        display.syncExec( () -> eventProvider.setItems( events ) );
-        display.syncExec( () -> panel.refresh() );
-      } );
+        selEvents.addItem( item );
+      }
+      LoggerUtils.defaultLogger().info( "querySelectedEvents(): queryEngine.query( interval, selEvents )" );
+      IList<SkEvent> events = queryEngine.query( interval, selEvents );
+      LoggerUtils.defaultLogger().info( "querySelectedEvents(): eventProvider.setItems( events )" );
+      display.syncExec( () -> eventProvider.setItems( events ) );
+      LoggerUtils.defaultLogger().info( "querySelectedEvents(): panel.refresh()" );
+      display.syncExec( () -> panel.refresh() );
     }
-    catch( InvocationTargetException | InterruptedException ex ) {
-      String error = (ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage());
+    catch( Throwable e ) {
+      String error = (e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
       TsDialogUtils.error( getShell(), error );
-      LoggerUtils.defaultLogger().error( ex );
+      LoggerUtils.defaultLogger().error( e );
     }
   }
 
