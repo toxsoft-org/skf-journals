@@ -23,7 +23,7 @@ import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
 import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
 
-import core.tslib.bricks.synchronize.ITsThreadExecutor;
+import core.tslib.bricks.threadexecutor.ITsThreadExecutor;
 
 /**
  * Реализация движка {@link IQueryEngine}.
