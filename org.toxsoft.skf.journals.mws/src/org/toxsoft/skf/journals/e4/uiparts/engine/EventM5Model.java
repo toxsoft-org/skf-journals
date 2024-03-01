@@ -164,7 +164,7 @@ public class EventM5Model
       setDefaultValue( IAtomicValue.NULL );
       setFlags( M5FF_DETAIL | M5FF_READ_ONLY );
       ValedStringText.OPDEF_IS_MULTI_LINE.setValue( params(), AV_TRUE );
-      params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 4 );
+      params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 5 ); // fucking Windows remove 1 row
       setValedEditor( ValedAvStringText.FACTORY.factoryName() );
     }
 
