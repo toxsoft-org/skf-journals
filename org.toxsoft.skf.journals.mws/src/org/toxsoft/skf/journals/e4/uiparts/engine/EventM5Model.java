@@ -5,25 +5,24 @@ import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.skf.journals.e4.uiparts.engine.ISkResources.*;
 
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.m5.IM5FieldDef;
-import org.toxsoft.core.tsgui.m5.gui.panels.IM5EntityPanel;
-import org.toxsoft.core.tsgui.m5.gui.panels.impl.M5DefaultEntityDetailsPanel;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.valed.api.IValedControl;
-import org.toxsoft.core.tsgui.valed.api.IValedControlFactory;
-import org.toxsoft.core.tsgui.valed.controls.av.ValedAvStringText;
-import org.toxsoft.core.tslib.av.IAtomicValue;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.coll.IListEdit;
-import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.skf.journals.e4.uiparts.devel.ISkModJournalEventFormatter;
-import org.toxsoft.skf.journals.e4.uiparts.devel.ISkModJournalEventFormattersRegistry;
-import org.toxsoft.uskat.core.api.evserv.SkEvent;
-import org.toxsoft.uskat.core.api.objserv.ISkObject;
-import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
-import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoEventInfo;
-import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.core.tsgui.valed.api.*;
+import org.toxsoft.core.tsgui.valed.controls.av.*;
+import org.toxsoft.core.tsgui.valed.controls.basic.*;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.skf.journals.e4.uiparts.devel.*;
+import org.toxsoft.uskat.core.api.evserv.*;
+import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
+import org.toxsoft.uskat.core.connection.*;
 
 /**
  * Модель отображения событий
@@ -164,7 +163,8 @@ public class EventM5Model
       setNameAndDescription( DESCRIPTION_STR, EV_DESCRIPTION );
       setDefaultValue( IAtomicValue.NULL );
       setFlags( M5FF_DETAIL | M5FF_READ_ONLY );
-
+      ValedStringText.OPDEF_IS_MULTI_LINE.setValue( params(), AV_TRUE );
+      params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 4 );
       setValedEditor( ValedAvStringText.FACTORY.factoryName() );
     }
 
