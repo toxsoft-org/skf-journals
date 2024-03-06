@@ -2,17 +2,19 @@ package org.toxsoft.skf.journals.e4.uiparts.main;
 
 import static org.toxsoft.skf.journals.e4.uiparts.main.ISkResources.*;
 
-import org.eclipse.swt.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.skf.journals.e4.uiparts.engine.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.gui.conn.*;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.toxsoft.core.tsgui.m5.IM5Domain;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tslib.utils.errors.TsException;
+import org.toxsoft.skf.alarms.gui.m5.SkAlarmM5Model;
+import org.toxsoft.skf.journals.e4.uiparts.engine.CommandM5Model;
+import org.toxsoft.skf.journals.e4.uiparts.engine.EventM5Model;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
 /**
  * Панель журналов (событий, команд и т.д.)
@@ -60,18 +62,16 @@ public class JournalsPanel
       ex.printStackTrace();
     }
 
-    // GOGA 2023-12-25 Alarms are not in skf-alarms yet
-    // try {
-    // ITsGuiContext alarmContext = new TsGuiContext( aContext );
-    //
-    // if( !m5.models().hasKey( SkAlarmM5Model.MODEL_ID ) ) {
-    // m5.addModel( new SkAlarmM5Model( false ) );
-    // }
-    // createAlarmsTable( paramsFolder, alarmContext );
-    // }
-    // catch( TsException ex ) {
-    // ex.printStackTrace();
-    // }
+    try {
+      ITsGuiContext alarmContext = new TsGuiContext( aContext );
+      if( !m5.models().hasKey( SkAlarmM5Model.MODEL_ID ) ) {
+        m5.addModel( new SkAlarmM5Model( false ) );
+      }
+      createAlarmsTable( paramsFolder, alarmContext );
+    }
+    catch( TsException ex ) {
+      ex.printStackTrace();
+    }
   }
 
   private static void createEventsTable( TabFolder aParent, ITsGuiContext aContext )
@@ -92,14 +92,13 @@ public class JournalsPanel
     item.setControl( new CommandsJournalPanel( aParent, aContext ) );
   }
 
-  // GOGA 2023-12-25 Alarms are not in skf-alarms yet
-  // private static void createAlarmsTable( TabFolder aParent, ITsGuiContext aContext )
-  // throws TsException {
-  //
-  // TabItem item = new TabItem( aParent, SWT.NONE );
-  // item.setText( "Тревоги" );
-  //
-  // item.setControl( new AlarmsJournalPanel( aParent, aContext ) );
-  // }
+  private static void createAlarmsTable( TabFolder aParent, ITsGuiContext aContext )
+      throws TsException {
+
+    TabItem item = new TabItem( aParent, SWT.NONE );
+    item.setText( "Тревоги" );
+
+    item.setControl( new AlarmsJournalPanel( aParent, aContext ) );
+  }
 
 }
