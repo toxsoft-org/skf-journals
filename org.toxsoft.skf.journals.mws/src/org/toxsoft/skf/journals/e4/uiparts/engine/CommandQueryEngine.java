@@ -5,6 +5,7 @@ import static org.toxsoft.skf.journals.e4.uiparts.engine.ISkResources.*;
 import org.eclipse.swt.widgets.Shell;
 import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
 import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
+import org.toxsoft.core.tslib.bricks.threadexec.ITsThreadExecutor;
 import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
 import org.toxsoft.core.tslib.bricks.time.impl.TimeUtils;
@@ -22,8 +23,6 @@ import org.toxsoft.uskat.core.api.hqserv.ISkQueryRawHistory;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
 import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
-
-import core.tslib.bricks.threadexecutor.ITsThreadExecutor;
 
 /**
  * Реализация движка {@link IQueryEngine}.
