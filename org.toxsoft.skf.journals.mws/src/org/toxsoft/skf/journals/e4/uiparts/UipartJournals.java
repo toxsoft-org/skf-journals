@@ -1,14 +1,14 @@
 package org.toxsoft.skf.journals.e4.uiparts;
 
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
-import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tsgui.widgets.TsComposite;
-import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.skf.journals.e4.uiparts.main.JournalsPanel;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.gui.e4.uiparts.SkMwsAbstractPart;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tsgui.widgets.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.journals.e4.uiparts.main.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.gui.conn.*;
+import org.toxsoft.uskat.core.gui.e4.uiparts.*;
 
 /**
  * Журнал событий и команд.
@@ -33,7 +33,7 @@ public class UipartJournals
 
   @Override
   protected void doCreateContent( TsComposite aParent ) {
-    ITsGuiContext ctx = new TsGuiContext( getWindowContext() );
+    ITsGuiContext ctx = new TsGuiContext( tsContext() );
     panel = new JournalsPanel( aParent, ctx );
     panel.setLayoutData( BorderLayout.CENTER );
   }
