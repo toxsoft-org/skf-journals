@@ -10,9 +10,9 @@ import org.toxsoft.core.tsgui.m5.IM5Domain;
 import org.toxsoft.core.tsgui.panels.TsPanel;
 import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
 import org.toxsoft.core.tslib.utils.errors.TsException;
-import org.toxsoft.skf.alarms.gui.m5.SkAlarmM5Model;
 import org.toxsoft.skf.journals.e4.uiparts.engine.CommandM5Model;
 import org.toxsoft.skf.journals.e4.uiparts.engine.EventM5Model;
+import org.toxsoft.skf.legacy.alarms.gui.m5.SkAlarmM5Model;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
