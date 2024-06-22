@@ -11,8 +11,8 @@ Export-Package: org.toxsoft.skf.journals,
  org.toxsoft.skf.journals.e4.uiparts.devel,
  org.toxsoft.skf.journals.e4.uiparts.engine,
  org.toxsoft.skf.journals.e4.uiparts.main
-Require-Bundle: javax.annotation,
- javax.inject,
+Require-Bundle: jakarta.inject.jakarta.inject-api,
+ jakarta.annotation-api,
  org.eclipse.core.runtime,
  org.eclipse.ui;resolution:=optional,
  org.eclipse.rap.ui;resolution:=optional,
@@ -33,6 +33,6 @@ Require-Bundle: javax.annotation,
  org.toxsoft.skf.legacy.alarms.gui,
  org.toxsoft.skf.dq.lib,
  org.toxsoft.skf.dq.s5
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: org.toxsoft.skf.journals.mws
 Bundle-ActivationPolicy: lazy

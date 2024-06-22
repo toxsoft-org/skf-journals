@@ -2,14 +2,14 @@ package org.toxsoft.skf.journals.e4.uiparts.engine;
 
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.panels.toolbar.TsToolbar;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
 
 /**
  * Стандартный тул-бар (наименование, выделить всё, снаять всё) для чек-деревьев
