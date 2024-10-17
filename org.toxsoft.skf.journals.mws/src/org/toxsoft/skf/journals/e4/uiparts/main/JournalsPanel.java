@@ -61,17 +61,17 @@ public class JournalsPanel
       ex.printStackTrace();
     }
 
-    // 2024-10-17 mvk remove legacy alarms impl
-    // try {
-    // ITsGuiContext alarmContext = new TsGuiContext( aContext );
-    // if( !m5.models().hasKey( SkAlarmM5Model.MODEL_ID ) ) {
-    // m5.addModel( new SkAlarmM5Model( false ) );
-    // }
-    // createAlarmsTable( paramsFolder, alarmContext );
-    // }
-    // catch( TsException ex ) {
-    // ex.printStackTrace();
-    // }
+    try {
+      ITsGuiContext alarmContext = new TsGuiContext( aContext );
+      // 2024-10-17 mvk remove legacy alarms impl
+      // if( !m5.models().hasKey( SkAlarmM5Model.MODEL_ID ) ) {
+      // m5.addModel( new SkAlarmM5Model( false ) );
+      // }
+      createAlarmsTable( paramsFolder, alarmContext );
+    }
+    catch( TsException ex ) {
+      ex.printStackTrace();
+    }
   }
 
   private static void createEventsTable( TabFolder aParent, ITsGuiContext aContext )
