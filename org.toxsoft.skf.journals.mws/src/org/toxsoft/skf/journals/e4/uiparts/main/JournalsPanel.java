@@ -10,7 +10,6 @@ import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.skf.alarms.gui.panels.impl.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
@@ -96,12 +95,8 @@ public class JournalsPanel
       throws TsException {
 
     TabItem item = new TabItem( aParent, SWT.NONE );
-    item.setText( "Тревоги" );
-
-    // 2024-10-17 mvk remove legacy alarms impl
-    // item.setControl( new AlarmsJournalPanel( aParent, aContext ) );
-    AlertRtPanel alertPanel = new AlertRtPanel( aContext );
-    alertPanel.createControl( aParent );
+    item.setText( "Тревоги" ); //$NON-NLS-1$
+    item.setControl( new AlarmsJournalPanel( aParent, aContext ) );
   }
 
 }
