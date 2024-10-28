@@ -1,14 +1,14 @@
 package org.toxsoft.skf.journals.e4.uiparts.engine;
 
-import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.core.tslib.bricks.time.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 
 /**
  * Движок запроса и получения историческийх сущностей (события, команды и т.д.)
  * <p>
  * Движок осуществляет запрос синхрнонно в методе {@link #query(ITimeInterval, IJournalQueryFilter)}.
+ * <p>
  *
  * @author goga
  * @param <T> - класс запрашиваемых историческийх сущностей.
