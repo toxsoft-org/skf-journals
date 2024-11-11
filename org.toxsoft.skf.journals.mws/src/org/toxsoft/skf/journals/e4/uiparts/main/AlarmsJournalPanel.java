@@ -1,9 +1,11 @@
 package org.toxsoft.skf.journals.e4.uiparts.main;
 
+import org.eclipse.swt.*;
+import org.eclipse.swt.custom.*;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.bricks.events.change.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.skf.alarms.gui.panels.impl.*;
@@ -26,9 +28,16 @@ public class AlarmsJournalPanel
       throws TsException {
     super( aParent, aContext );
     setLayout( new BorderLayout() );
+
+    // initialize SWT
+    SashForm sfMain = new SashForm( this, SWT.VERTICAL );
+
     AlertRtPanel alertPanel = new AlertRtPanel( aContext );
-    alertPanel.createControl( this );
+    alertPanel.createControl( sfMain );
     alertPanel.refresh();
+
+    AlarmJournalPanel alarmJournalPanel = new AlarmJournalPanel( aContext );
+    alarmJournalPanel.createControl( sfMain );
   }
 
   @Override
