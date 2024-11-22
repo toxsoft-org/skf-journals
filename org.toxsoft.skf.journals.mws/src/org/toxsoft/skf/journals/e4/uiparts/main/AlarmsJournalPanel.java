@@ -1,7 +1,5 @@
 package org.toxsoft.skf.journals.e4.uiparts.main;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -30,14 +28,15 @@ public class AlarmsJournalPanel
     setLayout( new BorderLayout() );
 
     // initialize SWT
-    SashForm sfMain = new SashForm( this, SWT.VERTICAL );
-
-    AlertRtPanel alertPanel = new AlertRtPanel( aContext );
-    alertPanel.createControl( sfMain );
-    alertPanel.refresh();
+    // dima, 21.11.24 использовалось для отладки, больше не нужно
+    // SashForm sfMain = new SashForm( this, SWT.VERTICAL );
+    //
+    // AlertRtPanel alertPanel = new AlertRtPanel( aContext );
+    // alertPanel.createControl( sfMain );
+    // alertPanel.refresh();
 
     AlarmJournalPanel alarmJournalPanel = new AlarmJournalPanel( aContext );
-    alarmJournalPanel.createControl( sfMain );
+    alarmJournalPanel.createControl( this );
   }
 
   @Override
