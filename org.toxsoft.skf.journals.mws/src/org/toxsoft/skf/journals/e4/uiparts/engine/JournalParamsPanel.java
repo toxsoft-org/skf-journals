@@ -372,4 +372,9 @@ public class JournalParamsPanel
     return retVal;
   }
 
+  @Override
+  public void resumeFiringWithCounterReset( boolean aFireDelayed ) {
+    // TODO Auto-generated method stub
+  }
+
 }
