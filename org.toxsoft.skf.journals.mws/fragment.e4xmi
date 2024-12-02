@@ -8,19 +8,19 @@
     <elements xsi:type="application:Addon" xmi:id="_v5BMgHSJEe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.addon.0" contributionURI="bundleclass://org.toxsoft.skf.journals.mws/org.toxsoft.skf.journals.e4.addons.AddonSkJournals"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_Rlu-wHSKEe2iQ77ib3AL1A" featurename="children" parentElementId="org.toxsoft.mws.perspectivestack.main">
-    <elements xsi:type="advanced:Perspective" xmi:id="_e6J-AHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.perps" label="%Persp_SkJournals" iconURI="platform:/plugin/org.toxsoft.skf.journals.mws/icons/is24x24/journals.png" tooltip="%Persp_SkJournals_D">
+    <elements xsi:type="advanced:Perspective" xmi:id="_e6J-AHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.perps" label="%Persp_SkJournals" iconURI="platform:/plugin/org.toxsoft.skf.journals.mws/icons/is24x24/perspectiva.png" tooltip="%Persp_SkJournals_D">
       <children xsi:type="basic:PartStack" xmi:id="_2AJpMHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.partstack.0">
         <children xsi:type="basic:Part" xmi:id="_2QXPcHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.part.part_journalevents" contributionURI="bundleclass://org.toxsoft.skf.journals.mws/org.toxsoft.skf.journals.e4.uiparts.UipartJournals" label="%Persp_SkJournals" iconURI="platform:/plugin/org.toxsoft.skf.journals.mws/icons/is24x24/journals.png" tooltip="%Persp_SkJournals_D"/>
       </children>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_RyJDEHSKEe2iQ77ib3AL1A" featurename="children" parentElementId="org.toxsoft.mws.menu.main.perspectives">
-    <elements xsi:type="menu:HandledMenuItem" xmi:id="_lXFlMHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.handledmenuitem.persp_vtjournals" label="%Persp_SkJournals" iconURI="platform:/plugin/org.toxsoft.skf.journals.mws/icons/is24x24/journals.png" tooltip="%Persp_SkJournals_D" type="Radio" command="_mJ9tQHSJEe2iQ77ib3AL1A">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_lXFlMHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.handledmenuitem.persp_vtjournals" label="%Persp_SkJournals" iconURI="platform:/plugin/org.toxsoft.skf.journals.mws/icons/is24x24/perspectiva.png" tooltip="%Persp_SkJournals_D" type="Radio" command="_mJ9tQHSJEe2iQ77ib3AL1A">
       <parameters xmi:id="_uEA5EHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.parameter.0" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId" value="org.toxsoft.skf.journals.perps"/>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_R-nY0HSKEe2iQ77ib3AL1A" featurename="children" parentElementId="org.toxsoft.mws.toolbar.perspectives">
-    <elements xsi:type="menu:HandledToolItem" xmi:id="_qWp2gHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.handledtoolitem.persp_vtjournals" label="%Persp_SkJournals" iconURI="platform:/plugin/org.toxsoft.skf.journals.mws/icons/is24x24/journals.png" tooltip="%Persp_SkJournals_D" type="Radio" command="_mJ9tQHSJEe2iQ77ib3AL1A">
+    <elements xsi:type="menu:HandledToolItem" xmi:id="_qWp2gHSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.handledtoolitem.persp_vtjournals" label="%Persp_SkJournals" iconURI="platform:/plugin/org.toxsoft.skf.journals.mws/icons/is24x24/perspectiva.png" tooltip="%Persp_SkJournals_D" type="Radio" command="_mJ9tQHSJEe2iQ77ib3AL1A">
       <parameters xmi:id="_v4P20HSREe2iQ77ib3AL1A" elementId="org.toxsoft.skf.journals.parameter.1" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId" value="org.toxsoft.skf.journals.perps"/>
     </elements>
   </fragments>
