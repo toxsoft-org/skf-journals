@@ -7,9 +7,12 @@ import static org.toxsoft.skf.journals.e4.uiparts.engine.ISkResources.*;
 
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
+import org.toxsoft.core.tsgui.valed.api.*;
+import org.toxsoft.core.tsgui.valed.controls.basic.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
@@ -19,12 +22,14 @@ import org.toxsoft.uskat.core.connection.*;
 /**
  * Модель отображения команд.
  *
- * @author max, dima
+ * @author max
+ * @author dima
  */
 public class CommandM5Model
     extends M5Model<IDtoCompletedCommand> {
 
-  private static final String VIS_NAME_FORMAT = "%s <%s> [%s]"; //$NON-NLS-1$
+  private static final String VIS_NAME_FORMAT  = "%s [%s]";  //$NON-NLS-1$
+  private static final String VIS_DESCR_FORMAT = "%s \n %s"; //$NON-NLS-1$
 
   private static final String AUTHOR_FORMAT = "%s [%s]"; //$NON-NLS-1$
 
@@ -82,10 +87,40 @@ public class CommandM5Model
       // Описание команды
       IDtoCmdInfo cmdInfo = skClass.cmds().list().findByKey( aEntity.cmd().cmdGwid().propId() );
 
-      return avStr(
-          String.format( VIS_NAME_FORMAT, cmdInfo.nmName(), cmdInfo.description(), aEntity.cmd().cmdGwid().strid() ) );
+      return avStr( String.format( VIS_NAME_FORMAT, cmdInfo.nmName(), aEntity.cmd().cmdGwid().strid() ) );
     }
   };
+
+  /**
+   * Описание команды.
+   */
+  public final M5AttributeFieldDef<IDtoCompletedCommand> VIS_DESCRIPTION =
+      new M5AttributeFieldDef<>( FID_DESCRIPTION, STRING ) {
+
+        @Override
+        protected void doInit() {
+          // display in details panel, no need name & description
+          setNameAndDescription( DESCRIPTION_STR, TsLibUtils.EMPTY_STRING );
+          ValedStringText.OPDEF_IS_MULTI_LINE.setValue( params(), AV_TRUE );
+          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 3 );
+          setDefaultValue( IAtomicValue.NULL );
+          setFlags( M5FF_DETAIL | M5FF_READ_ONLY );
+
+        }
+
+        @Override
+        protected IAtomicValue doGetFieldValue( IDtoCompletedCommand aEntity ) {
+          // Получаем объект команды
+          ISkObject skObject = conn.coreApi().objService().find( aEntity.cmd().cmdGwid().skid() );
+          // Получаем его класс
+          ISkClassInfo skClass = conn.coreApi().sysdescr().findClassInfo( skObject.classId() );
+          // Описание команды
+          IDtoCmdInfo cmdInfo = skClass.cmds().list().findByKey( aEntity.cmd().cmdGwid().propId() );
+
+          return avStr(
+              String.format( VIS_DESCR_FORMAT, cmdInfo.description(), aEntity.cmd().argValues().toString() ) );
+        }
+      };
 
   /**
    * Время команды
@@ -158,10 +193,11 @@ public class CommandM5Model
     conn = aConn;
     setNameAndDescription( CMDS_LIST_TABLE_NAME, CMDS_LIST_TABLE_DESCR );
     IListEdit<IM5FieldDef<IDtoCompletedCommand, ?>> fDefs = new ElemArrayList<>();
-    fDefs.add( VIS_NAME );
     fDefs.add( TIME );
+    fDefs.add( VIS_NAME );
     fDefs.add( AUTHOR );
     fDefs.add( EXECUTER );
+    fDefs.add( VIS_DESCRIPTION );
 
     addFieldDefs( fDefs );
   }

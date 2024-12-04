@@ -227,7 +227,6 @@ public class EventM5Model
    * @param aModelContext - контекст
    * @param aForPrint -признак того, что это печатная версия модели.
    */
-  @SuppressWarnings( { "rawtypes", "unchecked" } )
   public EventM5Model( ISkConnection aConn, ITsGuiContext aModelContext, boolean aForPrint ) {
     super( aForPrint ? PRINT_MODEL_ID : MODEL_ID, SkEvent.class );
     conn = aConn;
@@ -236,8 +235,8 @@ public class EventM5Model
     formatterRegistry = context.get( ISkModJournalEventFormattersRegistry.class );
     setNameAndDescription( EVENTS_LIST_TABLE_NAME, EVENTS_LIST_TABLE_DESCR );
     IListEdit<IM5FieldDef<SkEvent, ?>> fDefs = new ElemArrayList<>();
-    fDefs.add( VIS_NAME );
     fDefs.add( TIME );
+    fDefs.add( VIS_NAME );
     fDefs.add( SOURCE );
     if( !aForPrint ) {
       fDefs.add( SHORT_DESCRIPTION );
