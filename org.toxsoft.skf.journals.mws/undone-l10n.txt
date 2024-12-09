@@ -1,0 +1,10 @@
++-- org.toxsoft.skf.journals.e4.uiparts.engine (присутствуют пути для иконок)
++-- org.toxsoft.skf.journals.e4.uiparts.main
+
+не вынессены константы:
+    org.toxsoft.skf.journals.ISkJournalsConstants
+    org.toxsoft.skf.journals.e4.uiparts.ISkJournalsHardConstants
+    org.toxsoft.skf.journals.e4.uiparts.engine.CommandQueryEngine
+    org.toxsoft.skf.journals.e4.uiparts.engine.EventQueryEngine
+    org.toxsoft.skf.journals.e4.uiparts.main.EventsJournalPanel
+    

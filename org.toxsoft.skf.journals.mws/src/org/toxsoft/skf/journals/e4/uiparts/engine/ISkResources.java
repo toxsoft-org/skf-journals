@@ -11,80 +11,80 @@ interface ISkResources {
   /**
    * {@link EventM5Model},
    */
-  String EVENTS_LIST_TABLE_DESCR = Messages.EVENTS_LIST_TABLE_DESCR;
-  String EVENTS_LIST_TABLE_NAME  = Messages.EVENTS_LIST_TABLE_NAME;
-  String EVENT_SRC_COL_DESCR     = Messages.EVENT_SRC_COL_DESCR;
-  String EVENT_SRC_COL_NAME      = Messages.EVENT_SRC_COL_NAME;
-  String EVENT_TIME_COL_DESCR    = Messages.EVENT_TIME_COL_DESCR;
-  String EVENT_TIME_COL_NAME     = Messages.EVENT_TIME_COL_NAME;
-  String EVENT_NAME_COL_DESCR    = Messages.EVENT_NAME_COL_DESCR;
-  String EVENT_NAME_COL_NAME     = Messages.EVENT_NAME_COL_NAME;
-  String DESCRIPTION_STR         = Messages.DESCRIPTION_STR;
-  String EV_DESCRIPTION          = Messages.EV_DESCRIPTION;
+  String EVENTS_LIST_TABLE_DESCR = Messages.getString( "EVENTS_LIST_TABLE_DESCR" ); //$NON-NLS-1$
+  String EVENTS_LIST_TABLE_NAME  = Messages.getString( "EVENTS_LIST_TABLE_NAME" );  //$NON-NLS-1$
+  String EVENT_SRC_COL_DESCR     = Messages.getString( "EVENT_SRC_COL_DESCR" );     //$NON-NLS-1$
+  String EVENT_SRC_COL_NAME      = Messages.getString( "EVENT_SRC_COL_NAME" );      //$NON-NLS-1$
+  String EVENT_TIME_COL_DESCR    = Messages.getString( "EVENT_TIME_COL_DESCR" );    //$NON-NLS-1$
+  String EVENT_TIME_COL_NAME     = Messages.getString( "EVENT_TIME_COL_NAME" );     //$NON-NLS-1$
+  String EVENT_NAME_COL_DESCR    = Messages.getString( "EVENT_NAME_COL_DESCR" );    //$NON-NLS-1$
+  String EVENT_NAME_COL_NAME     = Messages.getString( "EVENT_NAME_COL_NAME" );     //$NON-NLS-1$
+  String DESCRIPTION_STR         = Messages.getString( "DESCRIPTION_STR" );         //$NON-NLS-1$
+  String EV_DESCRIPTION          = Messages.getString( "EV_DESCRIPTION" );          //$NON-NLS-1$
 
   /**
    * {@link DialogConcerningEventsParams},
    */
-  String STR_L_CLASSES               = Messages.STR_L_CLASSES;
-  String STR_BTN_CLEAR_FILTER        = Messages.STR_BTN_CLEAR_FILTER;
-  String STR_L_EVENTS                = Messages.STR_L_EVENTS;
-  String STR_L_COMMANDS              = Messages.STR_L_COMMANDS;
-  String STR_L_OBJECTS               = Messages.STR_L_OBJECTS;
-  String STR_COL_OBJ_NAME            = Messages.STR_COL_OBJ_NAME;
-  String STR_COL_EVENTS              = Messages.STR_COL_EVENTS;
-  String STR_COL_COMMANDS            = Messages.STR_COL_COMMANDS;
-  String DLG_T_CEP_EDIT              = Messages.DLG_T_CEP_EDIT;
-  String DLG_C_CEP_EDIT              = Messages.DLG_C_CEP_EDIT;
-  String STR_P_CHECK_ALL             = Messages.STR_P_CHECK_ALL;
-  String STR_P_UNCHECK_ALL           = Messages.STR_P_UNCHECK_ALL;
-  String CLASSES_N_PARAMS_TREE_TITLE = Messages.CLASSES_N_PARAMS_TREE_TITLE;
-  String ENTITY_TREE_TITLE           = Messages.ENTITY_TREE_TITLE;
+  String STR_L_CLASSES               = Messages.getString( "STR_L_CLASSES" );               //$NON-NLS-1$
+  String STR_BTN_CLEAR_FILTER        = Messages.getString( "STR_BTN_CLEAR_FILTER" );        //$NON-NLS-1$
+  String STR_L_EVENTS                = Messages.getString( "STR_L_EVENTS" );                //$NON-NLS-1$
+  String STR_L_COMMANDS              = Messages.getString( "STR_L_COMMANDS" );              //$NON-NLS-1$
+  String STR_L_OBJECTS               = Messages.getString( "STR_L_OBJECTS" );               //$NON-NLS-1$
+  String STR_COL_OBJ_NAME            = Messages.getString( "STR_COL_OBJ_NAME" );            //$NON-NLS-1$
+  String STR_COL_EVENTS              = Messages.getString( "STR_COL_EVENTS" );              //$NON-NLS-1$
+  String STR_COL_COMMANDS            = Messages.getString( "STR_COL_COMMANDS" );            //$NON-NLS-1$
+  String DLG_T_CEP_EDIT              = Messages.getString( "DLG_T_CEP_EDIT" );              //$NON-NLS-1$
+  String DLG_C_CEP_EDIT              = Messages.getString( "DLG_C_CEP_EDIT" );              //$NON-NLS-1$
+  String STR_P_CHECK_ALL             = Messages.getString( "STR_P_CHECK_ALL" );             //$NON-NLS-1$
+  String STR_P_UNCHECK_ALL           = Messages.getString( "STR_P_UNCHECK_ALL" );           //$NON-NLS-1$
+  String CLASSES_N_PARAMS_TREE_TITLE = Messages.getString( "CLASSES_N_PARAMS_TREE_TITLE" ); //$NON-NLS-1$
+  String ENTITY_TREE_TITLE           = Messages.getString( "ENTITY_TREE_TITLE" );           //$NON-NLS-1$
 
   /**
    * {@link EventQueryEngine}
    */
-  String MSG_INFO_QUERIENG_EVENTS = Messages.MSG_INFO_QUERIENG_EVENTS;
-  String MSG_PREPARE_EVENTS_QUERY = "Подготовка запроса событий";
-  String MSG_PREPARE_EVENTS_VIEW  = "Подготовка к отображению %d событий";
-  String ERR_QUERY_EVENTS_FAILED  = "Ошибка выполнения запроса событий: %s";
-  String MSG_QUERIENG_CMDS        = "Запрос на выбранные команды...";
-  String MSG_PREPARE_CMDS_QUERY   = "Подготовка запроса команд";
-  String MSG_PREPARE_CMDS_VIEW    = "Подготовка к отображению %d команд";
+  String MSG_INFO_QUERIENG_EVENTS = Messages.getString( "MSG_INFO_QUERIENG_EVENTS" ); //$NON-NLS-1$
+  String MSG_PREPARE_EVENTS_QUERY = Messages.getString( "MSG_PREPARE_EVENTS_QUERY" ); //$NON-NLS-1$
+  String MSG_PREPARE_EVENTS_VIEW  = Messages.getString( "MSG_PREPARE_EVENTS_VIEW" );  //$NON-NLS-1$
+  String ERR_QUERY_EVENTS_FAILED  = Messages.getString( "ERR_QUERY_EVENTS_FAILED" );  //$NON-NLS-1$
+  String MSG_QUERIENG_CMDS        = Messages.getString( "MSG_QUERIENG_CMDS" );        //$NON-NLS-1$
+  String MSG_PREPARE_CMDS_QUERY   = Messages.getString( "MSG_PREPARE_CMDS_QUERY" );   //$NON-NLS-1$
+  String MSG_PREPARE_CMDS_VIEW    = Messages.getString( "MSG_PREPARE_CMDS_VIEW" );    //$NON-NLS-1$
 
   /**
    * {@link EventQueryEngine}
    */
-  String MSG_INFO_QUERIENG_CMDS = Messages.MSG_INFO_QUERIENG_CMDS;
-  String MSG_PREPARE_CMDS_VIEW1 = "Подготовка к отображению %d событий: этап 1";
-  String ERR_QUERY_CMDS_FAILED  = "Ошибка выполнения запроса команд: %s";
+  String MSG_INFO_QUERIENG_CMDS = Messages.getString( "MSG_INFO_QUERIENG_CMDS" ); //$NON-NLS-1$
+  String MSG_PREPARE_CMDS_VIEW1 = Messages.getString( "MSG_PREPARE_CMDS_VIEW1" ); //$NON-NLS-1$
+  String ERR_QUERY_CMDS_FAILED  = Messages.getString( "ERR_QUERY_CMDS_FAILED" );  //$NON-NLS-1$
 
   /**
    * {@link JournalParamsPanel}, { JournalCmdParamsPanel}
    */
-  String STR_P_TEXT_START_TIME = Messages.STR_P_TEXT_START_TIME;
-  String STR_P_TEXT_DURATION   = Messages.STR_P_TEXT_DURATION;
-  String STR_L_JPP_NAME        = Messages.STR_L_JPP_NAME;
-  String STR_SEARCH_BTN_NAME   = Messages.STR_SEARCH_BTN_NAME;
-  String DLG_T_EXPORT_FILE     = Messages.DLG_T_EXPORT_FILE;
+  String STR_P_TEXT_START_TIME = Messages.getString( "STR_P_TEXT_START_TIME" ); //$NON-NLS-1$
+  String STR_P_TEXT_DURATION   = Messages.getString( "STR_P_TEXT_DURATION" );   //$NON-NLS-1$
+  String STR_L_JPP_NAME        = Messages.getString( "STR_L_JPP_NAME" );        //$NON-NLS-1$
+  String STR_SEARCH_BTN_NAME   = Messages.getString( "STR_SEARCH_BTN_NAME" );   //$NON-NLS-1$
+  String DLG_T_EXPORT_FILE     = Messages.getString( "DLG_T_EXPORT_FILE" );     //$NON-NLS-1$
 
   /**
    * {@link CommandM5Model},
    */
-  String CMDS_LIST_TABLE_DESCR = Messages.CMDS_LIST_TABLE_DESCR;
-  String CMDS_LIST_TABLE_NAME  = Messages.CMDS_LIST_TABLE_NAME;
-  String CMD_EXEC_COL_DESCR    = Messages.CMD_EXEC_COL_DESCR;
-  String CMD_EXEC_COL_NAME     = Messages.CMD_EXEC_COL_NAME;
-  String AUTHOR_COL_DESCR      = Messages.AUTHOR_COL_DESCR;
-  String AUTHOR_COL_NAME       = Messages.AUTHOR_COL_NAME;
-  String TIME_COL_DESCR        = Messages.TIME_COL_DESCR;
-  String TIME_COL_NAME         = Messages.TIME_COL_NAME;
-  String VIS_NAME_COL_DESCR    = Messages.VIS_NAME_COL_DESCR;
-  String VIS_NAME_COL_NAME     = Messages.VIS_NAME_COL_NAME;
+  String CMDS_LIST_TABLE_DESCR = Messages.getString( "CMDS_LIST_TABLE_DESCR" ); //$NON-NLS-1$
+  String CMDS_LIST_TABLE_NAME  = Messages.getString( "CMDS_LIST_TABLE_NAME" );  //$NON-NLS-1$
+  String CMD_EXEC_COL_DESCR    = Messages.getString( "CMD_EXEC_COL_DESCR" );    //$NON-NLS-1$
+  String CMD_EXEC_COL_NAME     = Messages.getString( "CMD_EXEC_COL_NAME" );     //$NON-NLS-1$
+  String AUTHOR_COL_DESCR      = Messages.getString( "AUTHOR_COL_DESCR" );      //$NON-NLS-1$
+  String AUTHOR_COL_NAME       = Messages.getString( "AUTHOR_COL_NAME" );       //$NON-NLS-1$
+  String TIME_COL_DESCR        = Messages.getString( "TIME_COL_DESCR" );        //$NON-NLS-1$
+  String TIME_COL_NAME         = Messages.getString( "TIME_COL_NAME" );         //$NON-NLS-1$
+  String VIS_NAME_COL_DESCR    = Messages.getString( "VIS_NAME_COL_DESCR" );    //$NON-NLS-1$
+  String VIS_NAME_COL_NAME     = Messages.getString( "VIS_NAME_COL_NAME" );     //$NON-NLS-1$
 
   /**
    * {@link ObjectsTreeComposite},
    */
-  String STR_SEARCH = Messages.STR_SEARCH;
+  String STR_SEARCH = Messages.getString( "STR_SEARCH" ); //$NON-NLS-1$
 
   /**
    * Относительный путь к иконке "Фильтра запроса событий".

@@ -1,25 +1,24 @@
 package org.toxsoft.skf.journals.e4.uiparts.main;
 
-import org.eclipse.osgi.util.*;
+import java.util.*;
 
 @SuppressWarnings( "javadoc" )
-public class Messages
-    extends NLS {
+public class Messages {
 
-  private static final String BUNDLE_NAME = "org.toxsoft.skf.journals.e4.uiparts.main.messages"; //$NON-NLS-1$
-  public static String        AUTHOR_STR;
-  public static String        CMDS_STR;
-  public static String        DATE_STR;
-  public static String        EVENTS_STR;
-  public static String        PRINT_EVENT_LIST_TITLE_FORMAT;
-  public static String        PRINT_COMMAND_LIST_TITLE_FORMAT;
-  public static String        PRINT_ALARM_LIST_TITLE_FORMAT;
+  private static final String BUNDLE_NAME = Messages.class.getName().toLowerCase();
 
-  static {
-    // initialize resource bundle
-    NLS.initializeMessages( BUNDLE_NAME, Messages.class );
-  }
+  private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
 
   private Messages() {
   }
+
+  public static String getString( String aKey ) {
+    try {
+      return RESOURCE_BUNDLE.getString( aKey );
+    }
+    catch( @SuppressWarnings( "unused" ) MissingResourceException e ) {
+      return '!' + aKey + '!';
+    }
+  }
+
 }
