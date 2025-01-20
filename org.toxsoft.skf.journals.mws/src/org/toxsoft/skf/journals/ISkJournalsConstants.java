@@ -1,10 +1,11 @@
 package org.toxsoft.skf.journals;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.toxsoft.core.tsgui.graphics.icons.ITsIconManager;
+import org.eclipse.e4.core.contexts.*;
+import org.toxsoft.core.tsgui.graphics.icons.*;
 
 /**
  * Plugin constants.
+ * <p>
  *
  * @author hazard157
  */
