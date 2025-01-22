@@ -1,12 +1,13 @@
 package org.toxsoft.skf.journals.e4.uiparts.main;
 
+import org.toxsoft.skf.journals.*;
+
 /**
  * Локализуемые ресурсы.
  *
  * @author dima
  */
-@SuppressWarnings( "nls" )
-interface ISkResources {
+public interface ISkResources {
 
   /**
    * {@link EventsJournalPanel},
@@ -32,5 +33,19 @@ interface ISkResources {
    */
   String EVENTS_STR = Messages.getString( "EVENTS_STR" ); //$NON-NLS-1$
   String CMDS_STR   = Messages.getString( "CMDS_STR" );   //$NON-NLS-1$
+
+  /**
+   * {@link ISkJournalsConstants},
+   */
+  String STR_ABKIND_JOURNALS             = Messages.getString( "STR_ABKIND_JOURNALS" );             //$NON-NLS-1$
+  String STR_ABKIND_JOURNALS_D           = Messages.getString( "STR_ABKIND_JOURNALS_D" );           //$NON-NLS-1$
+  String STR_ABILITY_ACCESS_JOURNALS     = Messages.getString( "STR_ABILITY_ACCESS_JOURNALS" );     //$NON-NLS-1$
+  String STR_ABILITY_ACCESS_JOURNALS_D   = Messages.getString( "STR_ABILITY_ACCESS_JOURNALS_D" );   //$NON-NLS-1$
+  String STR_ABILITY_JOURNALS_EVENTS     = Messages.getString( "STR_ABILITY_JOURNALS_EVENTS" );     //$NON-NLS-1$
+  String STR_ABILITY_JOURNALS_EVENTS_D   = Messages.getString( "STR_ABILITY_JOURNALS_EVENTS_D" );   //$NON-NLS-1$
+  String STR_ABILITY_JOURNALS_COMMANDS   = Messages.getString( "STR_ABILITY_JOURNALS_COMMANDS" );   //$NON-NLS-1$
+  String STR_ABILITY_JOURNALS_COMMANDS_D = Messages.getString( "STR_ABILITY_JOURNALS_COMMANDS_D" ); //$NON-NLS-1$
+  String STR_ABILITY_JOURNALS_ALARMS     = Messages.getString( "STR_ABILITY_JOURNALS_ALARMS" );     //$NON-NLS-1$
+  String STR_ABILITY_JOURNALS_ALARMS_D   = Messages.getString( "STR_ABILITY_JOURNALS_ALARMS_D" );   //$NON-NLS-1$
 
 }

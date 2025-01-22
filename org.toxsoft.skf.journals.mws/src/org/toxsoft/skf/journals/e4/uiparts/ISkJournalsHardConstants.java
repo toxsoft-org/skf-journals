@@ -17,6 +17,15 @@ import org.toxsoft.skf.journals.e4.uiparts.engine.*;
 public interface ISkJournalsHardConstants {
 
   /**
+   * visual elements ids
+   */
+  String E4_VISUAL_ELEM_ID_PERSP_JOURNALS      = "org.toxsoft.skf.journals.perps";               //$NON-NLS-1$
+  @SuppressWarnings( "javadoc" )
+  String E4_VISUAL_ELEM_ID_MENU_ITEEM_JOURNALS = "org.toxsoft.skf.journals.mws.handledmenuitem"; //$NON-NLS-1$
+  @SuppressWarnings( "javadoc" )
+  String E4_VISUAL_ELEM_ID_TOOL_ITEEM_JOURNALS = "org.toxsoft.skf.journals.mws.handledtoolitem"; //$NON-NLS-1$
+
+  /**
    * Идентификатор модели дерева классов (параметров) в диалоге редактора фильтра запроса.
    */
   String FILTER_CLASSES_TREE_MODEL_LIB = "filter.classes.tree.model.lib";
