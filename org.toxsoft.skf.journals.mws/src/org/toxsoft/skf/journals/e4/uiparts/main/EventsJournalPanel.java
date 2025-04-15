@@ -1,5 +1,7 @@
 package org.toxsoft.skf.journals.e4.uiparts.main;
 
+import static org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants.*;
+import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.skf.journals.e4.uiparts.ISkJournalsHardConstants.*;
 import static org.toxsoft.skf.journals.e4.uiparts.main.ISkResources.*;
 
@@ -133,6 +135,9 @@ public class EventsJournalPanel
     eventsModel = m5().getModel( EventM5Model.MODEL_ID, SkEvent.class );
 
     eventProvider = new InternalItemsProvider();
+
+    OPDEF_IS_FILTER_PANE.setValue( aContext.params(), AV_TRUE );
+    OPDEF_IS_TOOLBAR_NAME.setValue( aContext.params(), AV_TRUE );
 
     M5TreeViewer<SkEvent> treeViewer = new M5EventsTreeViewer( aContext, eventsModel );
 
