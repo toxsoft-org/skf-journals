@@ -5,55 +5,49 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.skf.journals.e4.uiparts.ISkJournalsHardConstants.*;
 import static org.toxsoft.skf.journals.e4.uiparts.main.ISkResources.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.*;
+import java.util.*;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.jasperreports.gui.main.*;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
-import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
-import org.toxsoft.core.tsgui.m5.IM5Domain;
-import org.toxsoft.core.tsgui.m5.IM5Model;
-import org.toxsoft.core.tsgui.m5.gui.mpc.impl.MultiPaneComponentModown;
-import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
-import org.toxsoft.core.tsgui.m5.gui.panels.impl.M5CollectionPanelMpcModownWrapper;
-import org.toxsoft.core.tsgui.m5.gui.viewers.impl.M5TreeViewer;
-import org.toxsoft.core.tsgui.m5.model.IM5ItemsProvider;
-import org.toxsoft.core.tsgui.panels.TsPanel;
-import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.dialogs.*;
+import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
+import org.toxsoft.core.tsgui.m5.gui.viewers.impl.*;
+import org.toxsoft.core.tsgui.m5.model.*;
+import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.bricks.events.change.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
-import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.IListEdit;
-import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.core.tslib.coll.notifier.impl.NotifierListEditWrapper;
-import org.toxsoft.core.tslib.coll.primtypes.IStringList;
-import org.toxsoft.core.tslib.coll.primtypes.IStringListEdit;
-import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
-import org.toxsoft.core.tslib.gw.skid.Skid;
-import org.toxsoft.core.tslib.utils.errors.TsException;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
-import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.skf.journals.e4.uiparts.JournalsLibUtils;
-import org.toxsoft.skf.journals.e4.uiparts.devel.DefaultMwsModJournalEventFormattersRegistry;
-import org.toxsoft.skf.journals.e4.uiparts.devel.ISkModJournalEventFormattersRegistry;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.time.*;
+import org.toxsoft.core.tslib.bricks.time.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.notifier.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.journals.e4.uiparts.*;
+import org.toxsoft.skf.journals.e4.uiparts.devel.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.*;
-import org.toxsoft.skf.journals.e4.uiparts.engine.IJournalParamsPanel.ECurrentAction;
-import org.toxsoft.uskat.core.api.evserv.SkEvent;
-import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
-import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoEventInfo;
-import org.toxsoft.uskat.core.api.users.ISkUser;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.skf.journals.e4.uiparts.engine.IJournalParamsPanel.*;
+import org.toxsoft.uskat.core.api.evserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
+import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.gui.conn.*;
 
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.type.*;
 
 /**
  * Панель журнала событий.
@@ -78,6 +72,11 @@ public class EventsJournalPanel
    * Таймаут (мсек) запроса событий. < 0: бесконечно
    */
   private static final long EVENT_QUERY_TIMEOUT = -1;
+
+  /**
+   * Максимальное количество отображаемых событий в панели
+   */
+  private static final int EVENT_PANEL_COUNT_LIMIT = 8192;
 
   private EventQueryEngine queryEngine;
 
@@ -291,13 +290,24 @@ public class EventsJournalPanel
 
   }
 
+  @SuppressWarnings( { "boxing", "nls" } )
   private void queryAllEvents() {
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
     try {
       LoggerUtils.defaultLogger().info( "queryAllEvents(): queryEngine.query( interval, allEventsParams() )" );
-      IList<SkEvent> events = queryEngine.query( interval, allEventsParams() );
-      LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.setItems( events )" );
+      IList<SkEvent> queryEvents = queryEngine.query( interval, allEventsParams() );
+      LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.setItems( events ). events count = %d",
+          queryEvents.size() );
+      if( queryEvents.size() > EVENT_PANEL_COUNT_LIMIT ) {
+        IList<SkEvent> newEvents = queryEvents.fetch( 0, EVENT_PANEL_COUNT_LIMIT );
+        ITimeInterval newInterval = new TimeInterval( newEvents.first().timestamp(), newEvents.last().timestamp() );
+        String warn = String.format( STR_EVENTS_LIMIT, queryEvents.size(), EVENT_PANEL_COUNT_LIMIT, newInterval );
+        LoggerUtils.defaultLogger().warning( warn );
+        TsDialogUtils.warn( getShell(), warn );
+        queryEvents = newEvents;
+      }
+      IList<SkEvent> events = queryEvents;
       display.syncExec( () -> eventProvider.setItems( events ) );
       LoggerUtils.defaultLogger().info( "queryAllEvents(): panel.refresh()" );
       display.syncExec( () -> panel.refresh() );
