@@ -319,6 +319,7 @@ public class EventsJournalPanel
     }
   }
 
+  @SuppressWarnings( { "nls", "boxing" } )
   private void querySelectedEvents() {
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
@@ -332,8 +333,18 @@ public class EventsJournalPanel
         selEvents.addItem( item );
       }
       LoggerUtils.defaultLogger().info( "querySelectedEvents(): queryEngine.query( interval, selEvents )" );
-      IList<SkEvent> events = queryEngine.query( interval, selEvents );
-      LoggerUtils.defaultLogger().info( "querySelectedEvents(): eventProvider.setItems( events )" );
+      IList<SkEvent> queryEvents = queryEngine.query( interval, selEvents );
+      LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.setItems( events ). events count = %d",
+          queryEvents.size() );
+      if( queryEvents.size() > EVENT_PANEL_COUNT_LIMIT ) {
+        IList<SkEvent> newEvents = queryEvents.fetch( 0, EVENT_PANEL_COUNT_LIMIT );
+        ITimeInterval newInterval = new TimeInterval( newEvents.first().timestamp(), newEvents.last().timestamp() );
+        String warn = String.format( STR_EVENTS_LIMIT, queryEvents.size(), EVENT_PANEL_COUNT_LIMIT, newInterval );
+        LoggerUtils.defaultLogger().warning( warn );
+        TsDialogUtils.warn( getShell(), warn );
+        queryEvents = newEvents;
+      }
+      IList<SkEvent> events = queryEvents;
       display.syncExec( () -> eventProvider.setItems( events ) );
       LoggerUtils.defaultLogger().info( "querySelectedEvents(): panel.refresh()" );
       display.syncExec( () -> panel.refresh() );

@@ -3,46 +3,42 @@ package org.toxsoft.skf.journals.e4.uiparts.main;
 import static org.toxsoft.skf.journals.e4.uiparts.ISkJournalsHardConstants.*;
 import static org.toxsoft.skf.journals.e4.uiparts.main.ISkResources.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.*;
+import java.util.*;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.jasperreports.gui.main.*;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
-import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
-import org.toxsoft.core.tsgui.m5.IM5Domain;
-import org.toxsoft.core.tsgui.m5.IM5Model;
-import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
-import org.toxsoft.core.tsgui.m5.model.impl.M5DefaultItemsProvider;
-import org.toxsoft.core.tsgui.panels.TsPanel;
-import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.bricks.events.change.IGenericChangeListener;
-import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
-import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.primtypes.IStringList;
-import org.toxsoft.core.tslib.coll.primtypes.IStringListEdit;
-import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
-import org.toxsoft.core.tslib.gw.skid.Skid;
-import org.toxsoft.core.tslib.utils.errors.TsException;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
-import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.skf.journals.e4.uiparts.JournalsLibUtils;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.dialogs.*;
+import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.*;
+import org.toxsoft.core.tsgui.m5.model.impl.*;
+import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.bricks.events.change.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.time.*;
+import org.toxsoft.core.tslib.bricks.time.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.journals.e4.uiparts.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.*;
-import org.toxsoft.skf.journals.e4.uiparts.engine.IJournalParamsPanel.ECurrentAction;
-import org.toxsoft.uskat.core.api.cmdserv.IDtoCompletedCommand;
-import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
-import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoCmdInfo;
-import org.toxsoft.uskat.core.api.users.ISkUser;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.skf.journals.e4.uiparts.engine.IJournalParamsPanel.*;
+import org.toxsoft.uskat.core.api.cmdserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
+import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.gui.conn.*;
 
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.type.*;
 
 /**
  * Панель просмотра журнала команд
@@ -59,6 +55,11 @@ public class CommandsJournalPanel
   private static final String timestampFormatString = "dd.MM.yy HH:mm:ss"; //$NON-NLS-1$
 
   private static final DateFormat timestampFormat = new SimpleDateFormat( timestampFormatString );
+
+  /**
+   * Максимальное количество отображаемых команд в панели
+   */
+  private static final int COMMAND_PANEL_COUNT_LIMIT = 8192;
 
   IM5CollectionPanel<IDtoCompletedCommand> panel = null;
 
@@ -122,21 +123,33 @@ public class CommandsJournalPanel
   public void onGenericChangeEvent( Object aSource ) {
     IJournalParamsPanel journalPanel = (IJournalParamsPanel)aSource;
     if( journalPanel.currentAction() == ECurrentAction.QUERY_ALL ) {
-      queryAllEvents();
+      queryAllCommands();
     }
     if( journalPanel.currentAction() == ECurrentAction.QUERY_SELECTED ) {
-      querySelectedEvents();
+      querySelectedCommands();
     }
     if( journalPanel.currentAction() == ECurrentAction.PRINT ) {
       printCommands();
     }
   }
 
-  private void queryAllEvents() {
+  @SuppressWarnings( { "boxing", "nls" } )
+  private void queryAllCommands() {
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
     try {
-      IList<IDtoCompletedCommand> commands = queryEngine.query( interval, allCommandsParams() );
+      IList<IDtoCompletedCommand> queryCommands = queryEngine.query( interval, allCommandsParams() );
+      LoggerUtils.defaultLogger().info( "queryAllCommands(): commandProvider.setItems( commands ). commands count = %d",
+          queryCommands.size() );
+      if( queryCommands.size() > COMMAND_PANEL_COUNT_LIMIT ) {
+        IList<IDtoCompletedCommand> newCommands = queryCommands.fetch( 0, COMMAND_PANEL_COUNT_LIMIT );
+        ITimeInterval newInterval = new TimeInterval( newCommands.first().timestamp(), newCommands.last().timestamp() );
+        String warn = String.format( STR_COMMAND_LIMIT, queryCommands.size(), COMMAND_PANEL_COUNT_LIMIT, newInterval );
+        LoggerUtils.defaultLogger().warning( warn );
+        TsDialogUtils.warn( getShell(), warn );
+        queryCommands = newCommands;
+      }
+      IList<IDtoCompletedCommand> commands = queryCommands;
       display.syncExec( () -> commandProvider.items().setAll( commands ) );
       display.syncExec( () -> panel.refresh() );
     }
@@ -147,7 +160,8 @@ public class CommandsJournalPanel
     }
   }
 
-  private void querySelectedEvents() {
+  @SuppressWarnings( { "nls", "boxing" } )
+  private void querySelectedCommands() {
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
     IList<ConcerningEventsItem> selectedEvents = ((ConcerningEventsParams)paramsPanel.selectedParams()).eventItems();
@@ -159,7 +173,18 @@ public class CommandsJournalPanel
         }
         selEvents.addItem( item );
       }
-      IList<IDtoCompletedCommand> commands = queryEngine.query( interval, selEvents );
+      IList<IDtoCompletedCommand> queryCommands = queryEngine.query( interval, selEvents );
+      LoggerUtils.defaultLogger().info(
+          "querySelectedCommands(): commandProvider.setItems( commands ). commands count = %d", queryCommands.size() );
+      if( queryCommands.size() > COMMAND_PANEL_COUNT_LIMIT ) {
+        IList<IDtoCompletedCommand> newCommands = queryCommands.fetch( 0, COMMAND_PANEL_COUNT_LIMIT );
+        ITimeInterval newInterval = new TimeInterval( newCommands.first().timestamp(), newCommands.last().timestamp() );
+        String warn = String.format( STR_COMMAND_LIMIT, queryCommands.size(), COMMAND_PANEL_COUNT_LIMIT, newInterval );
+        LoggerUtils.defaultLogger().warning( warn );
+        TsDialogUtils.warn( getShell(), warn );
+        queryCommands = newCommands;
+      }
+      IList<IDtoCompletedCommand> commands = queryCommands;
       display.syncExec( () -> commandProvider.items().setAll( commands ) );
       display.syncExec( () -> panel.refresh() );
     }

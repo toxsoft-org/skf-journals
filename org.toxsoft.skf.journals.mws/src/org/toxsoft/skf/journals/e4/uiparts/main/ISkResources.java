@@ -32,10 +32,12 @@ public interface ISkResources {
   /**
    * {@link JournalsPanel},
    */
-  String EVENTS_STR       = Messages.getString( "EVENTS_STR" );
-  String CMDS_STR         = Messages.getString( "CMDS_STR" );
-  String STR_EVENTS_LIMIT = "Количество полученных событий(%d) превышает предел панели событий (%d).\n\n"
+  String EVENTS_STR        = Messages.getString( "EVENTS_STR" );
+  String CMDS_STR          = Messages.getString( "CMDS_STR" );
+  String STR_EVENTS_LIMIT  = "Количество полученных событий(%d) превышает предел панели событий (%d).\n\n"
       + "События будут отображены в интервале:\n%s.";
+  String STR_COMMAND_LIMIT = "Количество полученных команд(%d) превышает предел панели команд (%d).\n\n"
+      + "Команды будут отображены в интервале:\n%s.";
 
   /**
    * {@link ISkJournalsConstants},
