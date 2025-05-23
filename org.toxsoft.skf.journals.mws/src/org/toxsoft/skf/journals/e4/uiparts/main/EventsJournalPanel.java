@@ -36,7 +36,6 @@ import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.skf.journals.e4.uiparts.*;
-import org.toxsoft.skf.journals.e4.uiparts.devel.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.IJournalParamsPanel.*;
 import org.toxsoft.uskat.core.api.evserv.*;
@@ -119,10 +118,6 @@ public class EventsJournalPanel
 
   private void init( ITsGuiContext aContext, IDataDef aEventsFilterClassesTreeModelLib )
       throws TsException {
-    if( !aContext.hasKey( ISkModJournalEventFormattersRegistry.class ) ) {
-      aContext.put( ISkModJournalEventFormattersRegistry.class, new DefaultMwsModJournalEventFormattersRegistry() );
-    }
-
     ISkConnection connection = aContext.get( ISkConnectionSupplier.class ).defConn();
 
     if( !m5().models().hasKey( EventM5Model.MODEL_ID ) ) {

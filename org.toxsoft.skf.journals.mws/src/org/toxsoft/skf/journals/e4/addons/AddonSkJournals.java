@@ -8,6 +8,7 @@ import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.bricks.quant.*;
 import org.toxsoft.core.tsgui.mws.bases.*;
 import org.toxsoft.skf.journals.*;
+import org.toxsoft.skf.journals.e4.uiparts.devel.*;
 import org.toxsoft.uskat.core.gui.utils.*;
 import org.toxsoft.uskat.core.impl.*;
 
@@ -32,7 +33,9 @@ public class AddonSkJournals
 
   @Override
   protected void initApp( IEclipseContext aAppContext ) {
-    // без реализации
+    if( !aAppContext.containsKey( ISkModJournalEventFormattersRegistry.class ) ) {
+      aAppContext.set( ISkModJournalEventFormattersRegistry.class, new DefaultMwsModJournalEventFormattersRegistry() );
+    }
   }
 
   @Override
