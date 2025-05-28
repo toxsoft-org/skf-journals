@@ -10,6 +10,7 @@ import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.basic.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.*;
@@ -116,11 +117,25 @@ public class CommandM5Model
           ISkClassInfo skClass = conn.coreApi().sysdescr().findClassInfo( skObject.classId() );
           // Описание команды
           IDtoCmdInfo cmdInfo = skClass.cmds().list().findByKey( aEntity.cmd().cmdGwid().propId() );
-
-          return avStr(
-              String.format( VIS_DESCR_FORMAT, cmdInfo.description(), aEntity.cmd().argValues().toString() ) );
+          // old version
+          // return avStr(
+          // String.format( VIS_DESCR_FORMAT, cmdInfo.description(), aEntity.cmd().argValues().toString() ) );
+          // new version
+          return avStr( String.format( VIS_DESCR_FORMAT, cmdInfo.description(),
+              argsOptSet2ReadableString( aEntity.cmd().argValues() ) ) );
         }
       };
+
+  @SuppressWarnings( "nls" )
+  private static String argsOptSet2ReadableString( IOptionSet aCmdArgs ) {
+    String retVal = TsLibUtils.EMPTY_STRING;
+    StringBuilder sb = new StringBuilder();
+    for( String argKey : aCmdArgs.keys() ) {
+      String argValue = aCmdArgs.findByKey( argKey ).toString();
+      sb.append( argKey + " : " + argValue + "\n" );
+    }
+    return retVal;
+  }
 
   /**
    * Время команды
