@@ -128,13 +128,15 @@ public class CommandM5Model
 
   @SuppressWarnings( "nls" )
   private static String argsOptSet2ReadableString( IOptionSet aCmdArgs ) {
-    String retVal = TsLibUtils.EMPTY_STRING;
-    StringBuilder sb = new StringBuilder();
+    if( aCmdArgs.isEmpty() ) {
+      return TsLibUtils.EMPTY_STRING;
+    }
+    StringBuilder sb = new StringBuilder( COMMAND_ARGUMENTS );
     for( String argKey : aCmdArgs.keys() ) {
       String argValue = aCmdArgs.findByKey( argKey ).toString();
       sb.append( argKey + " : " + argValue + "\n" );
     }
-    return retVal;
+    return sb.toString();
   }
 
   /**

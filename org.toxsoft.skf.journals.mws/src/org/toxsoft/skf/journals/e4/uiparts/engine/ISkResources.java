@@ -80,6 +80,7 @@ interface ISkResources {
   String TIME_COL_NAME         = Messages.getString( "TIME_COL_NAME" );         //$NON-NLS-1$
   String VIS_NAME_COL_DESCR    = Messages.getString( "VIS_NAME_COL_DESCR" );    //$NON-NLS-1$
   String VIS_NAME_COL_NAME     = Messages.getString( "VIS_NAME_COL_NAME" );     //$NON-NLS-1$
+  String COMMAND_ARGUMENTS     = Messages.getString("COMMAND_ARGUMENTS"); //$NON-NLS-1$
 
   /**
    * {@link ObjectsTreeComposite},
