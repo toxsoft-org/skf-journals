@@ -70,17 +70,18 @@ interface ISkResources {
   /**
    * {@link CommandM5Model},
    */
-  String CMDS_LIST_TABLE_DESCR = Messages.getString( "CMDS_LIST_TABLE_DESCR" ); //$NON-NLS-1$
-  String CMDS_LIST_TABLE_NAME  = Messages.getString( "CMDS_LIST_TABLE_NAME" );  //$NON-NLS-1$
-  String CMD_EXEC_COL_DESCR    = Messages.getString( "CMD_EXEC_COL_DESCR" );    //$NON-NLS-1$
-  String CMD_EXEC_COL_NAME     = Messages.getString( "CMD_EXEC_COL_NAME" );     //$NON-NLS-1$
-  String AUTHOR_COL_DESCR      = Messages.getString( "AUTHOR_COL_DESCR" );      //$NON-NLS-1$
-  String AUTHOR_COL_NAME       = Messages.getString( "AUTHOR_COL_NAME" );       //$NON-NLS-1$
-  String TIME_COL_DESCR        = Messages.getString( "TIME_COL_DESCR" );        //$NON-NLS-1$
-  String TIME_COL_NAME         = Messages.getString( "TIME_COL_NAME" );         //$NON-NLS-1$
-  String VIS_NAME_COL_DESCR    = Messages.getString( "VIS_NAME_COL_DESCR" );    //$NON-NLS-1$
-  String VIS_NAME_COL_NAME     = Messages.getString( "VIS_NAME_COL_NAME" );     //$NON-NLS-1$
-  String COMMAND_ARGUMENTS     = Messages.getString("COMMAND_ARGUMENTS"); //$NON-NLS-1$
+  String CMDS_LIST_TABLE_DESCR    = Messages.getString( "CMDS_LIST_TABLE_DESCR" ); //$NON-NLS-1$
+  String CMDS_LIST_TABLE_NAME     = Messages.getString( "CMDS_LIST_TABLE_NAME" );  //$NON-NLS-1$
+  String CMD_EXEC_COL_DESCR       = Messages.getString( "CMD_EXEC_COL_DESCR" );    //$NON-NLS-1$
+  String CMD_EXEC_COL_NAME        = Messages.getString( "CMD_EXEC_COL_NAME" );     //$NON-NLS-1$
+  String AUTHOR_COL_DESCR         = Messages.getString( "AUTHOR_COL_DESCR" );      //$NON-NLS-1$
+  String AUTHOR_COL_NAME          = Messages.getString( "AUTHOR_COL_NAME" );       //$NON-NLS-1$
+  String TIME_COL_DESCR           = Messages.getString( "TIME_COL_DESCR" );        //$NON-NLS-1$
+  String TIME_COL_NAME            = Messages.getString( "TIME_COL_NAME" );         //$NON-NLS-1$
+  String VIS_NAME_COL_DESCR       = Messages.getString( "VIS_NAME_COL_DESCR" );    //$NON-NLS-1$
+  String VIS_NAME_COL_NAME        = Messages.getString( "VIS_NAME_COL_NAME" );     //$NON-NLS-1$
+  String COMMAND_ARGUMENTS        = Messages.getString( "COMMAND_ARGUMENTS" );     //$NON-NLS-1$
+  String COMMAND_HAS_NO_ARGUMENTS = Messages.getString("COMMAND_HAS_NO_ARGUMENTS"); //$NON-NLS-1$
 
   /**
    * {@link ObjectsTreeComposite},

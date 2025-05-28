@@ -129,7 +129,7 @@ public class CommandM5Model
   @SuppressWarnings( "nls" )
   private static String argsOptSet2ReadableString( IOptionSet aCmdArgs ) {
     if( aCmdArgs.isEmpty() ) {
-      return TsLibUtils.EMPTY_STRING;
+      return COMMAND_HAS_NO_ARGUMENTS;
     }
     StringBuilder sb = new StringBuilder( COMMAND_ARGUMENTS );
     for( String argKey : aCmdArgs.keys() ) {
