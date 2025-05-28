@@ -103,7 +103,7 @@ public class CommandM5Model
           // display in details panel, no need name & description
           setNameAndDescription( DESCRIPTION_STR, TsLibUtils.EMPTY_STRING );
           ValedStringText.OPDEF_IS_MULTI_LINE.setValue( params(), AV_TRUE );
-          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 3 );
+          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 4 );
           setDefaultValue( IAtomicValue.NULL );
           setFlags( M5FF_DETAIL | M5FF_READ_ONLY );
 
@@ -134,7 +134,7 @@ public class CommandM5Model
     StringBuilder sb = new StringBuilder( COMMAND_ARGUMENTS );
     for( String argKey : aCmdArgs.keys() ) {
       String argValue = aCmdArgs.findByKey( argKey ).toString();
-      sb.append( argKey + " : " + argValue + "\n" );
+      sb.append( " • " + argKey + " = " + argValue + "\n" );
     }
     return sb.toString();
   }
