@@ -147,11 +147,23 @@ public class EventM5Model
           ISkObject srcObj = conn.coreApi().objService().find( aEntity.eventGwid().skid() );
           ISkModJournalEventFormatter formatter =
               formatterRegistry.find( srcObj.classId(), aEntity.eventGwid().propId() );
-
-          return formatter == null ? VIS_NAME.getFieldValue( aEntity )
-              : avStr( formatter.formatShortText( aEntity, context ) );
+          // dima 10.07.25 if there is no formatter for that event, then process it by itself
+          if( formatter == null ) {
+            return avStr( getDefltEventShortDescription( aEntity ) );
+          }
+          return avStr( formatter.formatShortText( aEntity, context ) );
         }
       };
+
+  protected String getDefltEventShortDescription( SkEvent aEvent ) {
+    // формируем в одной строке описание события
+    StringBuilder sb = new StringBuilder();
+    for( String paramKey : aEvent.paramValues().keys() ) {
+      IAtomicValue paramVal = aEvent.paramValues().findByKey( paramKey );
+      sb.append( String.format( " %s = %s; ", paramKey, paramVal.toString() ) ); //$NON-NLS-1$
+    }
+    return sb.toString();
+  }
 
   /**
    * Описание события - возможно многострочное - в окне детального отображения
@@ -172,11 +184,25 @@ public class EventM5Model
     protected IAtomicValue doGetFieldValue( SkEvent aEntity ) {
       ISkObject srcObj = conn.coreApi().objService().find( aEntity.eventGwid().skid() );
       ISkModJournalEventFormatter formatter = formatterRegistry.find( srcObj.classId(), aEntity.eventGwid().propId() );
-
-      return formatter == null ? VIS_NAME.getFieldValue( aEntity )
-          : avStr( formatter.formatLongText( aEntity, context ) );
+      // dima 10.07.25 if there is no formatter for that event, then process it by itself
+      if( formatter == null ) {
+        return avStr( getDefltEventLongDescripion( aEntity ) );
+      }
+      return avStr( formatter.formatLongText( aEntity, context ) );
     }
   };
+
+  protected String getDefltEventLongDescripion( SkEvent aEvent ) {
+    // формируем описание события
+    StringBuilder sb = new StringBuilder();
+    sb.append( EV_PARAMS );
+
+    for( String paramKey : aEvent.paramValues().keys() ) {
+      IAtomicValue paramVal = aEvent.paramValues().findByKey( paramKey );
+      sb.append( String.format( " • %s = %s\n", paramKey, paramVal.toString() ) ); //$NON-NLS-1$
+    }
+    return sb.toString();
+  }
 
   /**
    * Источник события
