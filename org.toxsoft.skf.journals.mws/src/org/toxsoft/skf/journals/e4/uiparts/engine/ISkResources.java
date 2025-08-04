@@ -5,7 +5,7 @@ package org.toxsoft.skf.journals.e4.uiparts.engine;
  *
  * @author dima
  */
-interface ISkResources {
+public interface ISkResources {
 
   /**
    * {@link EventM5Model},
