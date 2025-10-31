@@ -63,7 +63,7 @@ public class JournalsPanel
           connection.coreApi().userService().abilityManager().findAbility( ABILITY_JOURNALS_COMMANDS.id() );
       if( connection.coreApi().userService().abilityManager().isAbilityAllowed( accessCommands.id() ) ) {
         if( !m5.models().hasKey( CommandM5Model.MODEL_ID ) ) {
-          m5.addModel( new CommandM5Model( connection, false ) );
+          m5.addModel( new CommandM5Model( connection, cmdContext, false ) );
         }
         createCommandsTable( paramsFolder, cmdContext );
       }

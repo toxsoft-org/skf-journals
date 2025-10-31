@@ -16,7 +16,7 @@ public interface ISkModJournalEventFormatter {
    * Формирует краткий однострочный текст для вывода в строке таблицы.
    *
    * @param aEvent {@link SkEvent} - отображаемое событие
-   * @param aContext
+   * @param aContext {@link ITsGuiContext} - контекст приложения
    * @return String - сформированный текст, не бывает <code>null</code>
    */
   String formatShortText( SkEvent aEvent, ITsGuiContext aContext );
@@ -25,7 +25,7 @@ public interface ISkModJournalEventFormatter {
    * Формирует длинный (скорее всего, многострочный) текст для вывода в в поле деетального просмотра таблицы.
    *
    * @param aEvent {@link SkEvent} - отображаемое событие
-   * @param aContext
+   * @param aContext {@link ITsGuiContext} - контекст приложения
    * @return String - сформированный текст, не бывает <code>null</code>
    */
   String formatLongText( SkEvent aEvent, ITsGuiContext aContext );
@@ -35,10 +35,9 @@ public interface ISkModJournalEventFormatter {
    *
    * @param aEvent {@link SkEvent} - отображаемое событие
    * @param aIconSize {@link EIconSize} - запрошенный размер значка
-   * @param aContext
+   * @param aContext {@link ITsGuiContext} - контекст приложения
    * @return {@link Image} - значок для отображения или <code>null</code>
    */
-  @SuppressWarnings( "unused" )
   default Image getIcon( SkEvent aEvent, EIconSize aIconSize, ITsGuiContext aContext ) {
     return null;
   }

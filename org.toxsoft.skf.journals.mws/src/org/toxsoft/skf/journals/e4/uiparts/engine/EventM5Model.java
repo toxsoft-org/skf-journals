@@ -229,6 +229,9 @@ public class EventM5Model
    */
   ISkConnection conn;
 
+  /**
+   * Контекст приложения
+   */
   ITsGuiContext context;
 
   /**

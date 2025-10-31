@@ -5,6 +5,7 @@ import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.skf.journals.e4.uiparts.engine.ISkResources.*;
 
+import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.valed.api.*;
@@ -14,6 +15,7 @@ import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.skf.journals.e4.uiparts.devel.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
@@ -29,8 +31,23 @@ import org.toxsoft.uskat.core.connection.*;
 public class CommandM5Model
     extends M5Model<IDtoCompletedCommand> {
 
-  private static final String VIS_NAME_FORMAT  = "%s [%s]";  //$NON-NLS-1$
-  private static final String VIS_DESCR_FORMAT = "%s \n %s"; //$NON-NLS-1$
+  /**
+   * Регистр форматов отображения команд
+   */
+  private ISkModJournalCommandFormattersRegistry formatterRegistry;
+
+  /**
+   * Соединение с сервером
+   */
+  private ISkConnection conn;
+
+  /**
+   * Контекст приложения
+   */
+  private ITsGuiContext context;
+
+  private static final String VIS_NAME_FORMAT  = "%s [%s]";               //$NON-NLS-1$
+  private static final String VIS_DESCR_FORMAT = " %s \n Gwid: %s \n %s"; //$NON-NLS-1$
 
   private static final String AUTHOR_FORMAT = "%s [%s]"; //$NON-NLS-1$
 
@@ -81,6 +98,18 @@ public class CommandM5Model
 
     @Override
     protected IAtomicValue doGetFieldValue( IDtoCompletedCommand aEntity ) {
+      ISkObject srcObj = conn.coreApi().objService().find( aEntity.cmd().cmdGwid().skid() );
+      ISkModJournalCommandFormatter formatter =
+          formatterRegistry.find( srcObj.classId(), aEntity.cmd().cmdGwid().propId() );
+      // dima 30.10.25 if there is no formatter for that command, then process it by itself
+      if( formatter == null ) {
+        return getDfltVisName( aEntity );
+      }
+
+      return avStr( formatter.formatVisualName( aEntity, context ) );
+    }
+
+    private IAtomicValue getDfltVisName( IDtoCompletedCommand aEntity ) {
       // Получаем объект команды
       ISkObject skObject = conn.coreApi().objService().find( aEntity.cmd().cmdGwid().skid() );
       // Получаем его класс
@@ -122,7 +151,7 @@ public class CommandM5Model
           // String.format( VIS_DESCR_FORMAT, cmdInfo.description(), aEntity.cmd().argValues().toString() ) );
           // new version
           return avStr( String.format( VIS_DESCR_FORMAT, cmdInfo.description(),
-              argsOptSet2ReadableString( aEntity.cmd().argValues() ) ) );
+              aEntity.cmd().cmdGwid().canonicalString(), argsOptSet2ReadableString( aEntity.cmd().argValues() ) ) );
         }
       };
 
@@ -192,28 +221,41 @@ public class CommandM5Model
     @Override
     protected IAtomicValue doGetFieldValue( IDtoCompletedCommand aEntity ) {
       ISkObject srcObj = conn.coreApi().objService().find( aEntity.cmd().cmdGwid().skid() );
+      ISkModJournalCommandFormatter formatter =
+          formatterRegistry.find( srcObj.classId(), aEntity.cmd().cmdGwid().propId() );
+      // dima 30.10.25 if there is no formatter for that command, then process it by itself
+      if( formatter == null ) {
+        return getDfltExecuterText( aEntity );
+      }
 
+      return avStr( formatter.formatExecuterText( aEntity, context ) );
+    }
+
+    private IAtomicValue getDfltExecuterText( IDtoCompletedCommand aEntity ) {
+      ISkObject srcObj = conn.coreApi().objService().find( aEntity.cmd().cmdGwid().skid() );
       return avStr( String.format( EXECUTER_FORMAT, srcObj.readableName(), srcObj.strid() ) );
     }
   };
-
-  ISkConnection conn;
 
   /**
    * Конструктор.
    *
    * @param aConn - соединение с сервером.
+   * @param aModelContext - app context
    * @param aForPrint - attribute signs the model for prints (if true).
    */
-  public CommandM5Model( ISkConnection aConn, boolean aForPrint ) {
+  public CommandM5Model( ISkConnection aConn, ITsGuiContext aModelContext, boolean aForPrint ) {
     super( aForPrint ? PRINT_MODEL_ID : MODEL_ID, IDtoCompletedCommand.class );
     conn = aConn;
+    context = aModelContext;
+    formatterRegistry = context.get( ISkModJournalCommandFormattersRegistry.class );
+
     setNameAndDescription( CMDS_LIST_TABLE_NAME, CMDS_LIST_TABLE_DESCR );
     IListEdit<IM5FieldDef<IDtoCompletedCommand, ?>> fDefs = new ElemArrayList<>();
     fDefs.add( TIME );
+    fDefs.add( EXECUTER );
     fDefs.add( VIS_NAME );
     fDefs.add( AUTHOR );
-    fDefs.add( EXECUTER );
     fDefs.add( VIS_DESCRIPTION );
 
     addFieldDefs( fDefs );

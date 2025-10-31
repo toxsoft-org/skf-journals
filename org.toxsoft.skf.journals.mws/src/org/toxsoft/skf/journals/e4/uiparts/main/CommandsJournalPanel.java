@@ -224,7 +224,7 @@ public class CommandsJournalPanel
     try {
       ISkConnectionSupplier connectionSup = eclipseContext().get( ISkConnectionSupplier.class );
       ISkConnection connection = connectionSup.defConn();
-      CommandM5Model printCommandsModel = new CommandM5Model( connection, true );
+      CommandM5Model printCommandsModel = new CommandM5Model( connection, tsContext(), true );
 
       m5().initTemporaryModel( printCommandsModel );
 

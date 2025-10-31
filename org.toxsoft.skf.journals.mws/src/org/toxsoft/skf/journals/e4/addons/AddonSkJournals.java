@@ -36,6 +36,10 @@ public class AddonSkJournals
     if( !aAppContext.containsKey( ISkModJournalEventFormattersRegistry.class ) ) {
       aAppContext.set( ISkModJournalEventFormattersRegistry.class, new DefaultMwsModJournalEventFormattersRegistry() );
     }
+    if( !aAppContext.containsKey( ISkModJournalCommandFormattersRegistry.class ) ) {
+      aAppContext.set( ISkModJournalCommandFormattersRegistry.class,
+          new DefaultMwsModJournalCommandFormattersRegistry() );
+    }
   }
 
   @Override
