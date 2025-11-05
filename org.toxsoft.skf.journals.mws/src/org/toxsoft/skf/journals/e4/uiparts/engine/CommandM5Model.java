@@ -11,6 +11,7 @@ import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.basic.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
@@ -182,7 +183,9 @@ public class CommandM5Model
 
     @Override
     protected IAtomicValue doGetFieldValue( IDtoCompletedCommand aEntity ) {
-      return avTimestamp( aEntity.timestamp() );
+      Long date = Long.valueOf( aEntity.timestamp() );
+      return AvUtils.avStr( String.format( "%tF      %tT.%tL", date, date, date ) ); //$NON-NLS-1$
+      // return avTimestamp( aEntity.timestamp() );
     }
   };
 

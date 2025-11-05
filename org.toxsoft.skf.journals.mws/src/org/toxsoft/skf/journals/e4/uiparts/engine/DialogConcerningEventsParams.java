@@ -60,7 +60,7 @@ public class DialogConcerningEventsParams
    * Конcтруктор для встраивания в диалог.
    *
    * @param aParent {@link Composite} - родительская панель
-   * @param aOwnerDialog {@link CommonDialogBase} - родительский диалог
+   * @param aOwnerDialog {@link TsDialog} - родительский диалог
    */
   protected DialogConcerningEventsParams( Composite aParent,
       TsDialog<ConcerningEventsParams, ITsGuiContext> aOwnerDialog ) {
@@ -124,8 +124,7 @@ public class DialogConcerningEventsParams
     // Запоминаем переданные данные
     eventsParams = aData;
     // Отображаем список классов
-    classesModel =
-        (ILibClassInfoesTreeModel)tsContext().get( ISkJournalsHardConstants.FILTER_CLASSES_TREE_MODEL_LIB );
+    classesModel = (ILibClassInfoesTreeModel)tsContext().get( ISkJournalsHardConstants.FILTER_CLASSES_TREE_MODEL_LIB );
 
     classesTree.setClassesModel( classesModel );
 
