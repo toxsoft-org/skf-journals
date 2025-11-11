@@ -184,15 +184,18 @@ public class EventsJournalPanel
   IConcerningEventsParams allEventsParams() {
     ConcerningEventsParams retVal = new ConcerningEventsParams();
     for( ISkClassInfo classInfo : listNeededClasses() ) {
+      // dima 10.11.25 оставляем только классы у которых нет наследников
+      if( classInfo.listSubclasses( false, false ).isEmpty() ) {
 
-      IStringListEdit eventsIds = new StringArrayList();
+        IStringListEdit eventsIds = new StringArrayList();
 
-      for( IDtoEventInfo event : classInfo.events().list() ) {
-        eventsIds.add( event.id() );
+        for( IDtoEventInfo event : classInfo.events().list() ) {
+          eventsIds.add( event.id() );
+        }
+
+        ConcerningEventsItem evItem = new ConcerningEventsItem( classInfo.id(), eventsIds, IStringList.EMPTY );
+        retVal.addItem( evItem );
       }
-
-      ConcerningEventsItem evItem = new ConcerningEventsItem( classInfo.id(), eventsIds, IStringList.EMPTY );
-      retVal.addItem( evItem );
     }
     return retVal;
   }

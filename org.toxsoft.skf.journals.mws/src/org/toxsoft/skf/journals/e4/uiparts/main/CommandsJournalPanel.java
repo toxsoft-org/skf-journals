@@ -201,15 +201,19 @@ public class CommandsJournalPanel
   IConcerningEventsParams allCommandsParams() {
     ConcerningEventsParams retVal = new ConcerningEventsParams();
     for( ISkClassInfo classInfo : listNeededClasses() ) {
-      IStringListEdit cmdsIds = new StringArrayList();
+      // dima 10.11.25 оставляем только классы у которых нет наследников
+      if( classInfo.listSubclasses( false, false ).isEmpty() ) {
+        IStringListEdit cmdsIds = new StringArrayList();
 
-      for( IDtoCmdInfo cmd : classInfo.cmds().list() ) {
-        cmdsIds.add( cmd.id() );
+        for( IDtoCmdInfo cmd : classInfo.cmds().list() ) {
+          cmdsIds.add( cmd.id() );
+        }
+
+        ConcerningEventsItem evItem = new ConcerningEventsItem( classInfo.id(), cmdsIds, IStringList.EMPTY );
+        retVal.addItem( evItem );
       }
-
-      ConcerningEventsItem evItem = new ConcerningEventsItem( classInfo.id(), cmdsIds, IStringList.EMPTY );
-      retVal.addItem( evItem );
     }
+
     return retVal;
   }
 
