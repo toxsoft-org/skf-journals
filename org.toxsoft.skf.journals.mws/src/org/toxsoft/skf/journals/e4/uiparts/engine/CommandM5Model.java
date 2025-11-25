@@ -12,6 +12,7 @@ import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.basic.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
@@ -52,7 +53,10 @@ public class CommandM5Model
 
   private static final String AUTHOR_FORMAT = "%s [%s]"; //$NON-NLS-1$
 
-  private static final String EXECUTER_FORMAT = "%s [%s]"; //$NON-NLS-1$
+  /**
+   * стандарнтый формат отображения исполнителя
+   */
+  public static final String EXECUTER_FORMAT = "%s [%s]"; //$NON-NLS-1$
 
   /**
    * Идентификатор модели.
@@ -117,7 +121,24 @@ public class CommandM5Model
       ISkClassInfo skClass = conn.coreApi().sysdescr().findClassInfo( skObject.classId() );
       // Описание команды
       IDtoCmdInfo cmdInfo = skClass.cmds().list().findByKey( aEntity.cmd().cmdGwid().propId() );
-
+      // формируем описание события
+      if( !cmdInfo.argDefs().isEmpty() ) {
+        StringBuilder sb = new StringBuilder();
+        for( IDataDef cmdDef : cmdInfo.argDefs() ) {
+          // получаем значение аргумента
+          IAtomicValue argVal = aEntity.cmd().argValues().findByKey( cmdDef.id() );
+          String argDescr = cmdDef.description();
+          // получаем строку форматирования
+          String formatStr = cmdDef.formatString();
+          if( formatStr != null ) {
+            sb.append( AvUtils.printAv( formatStr, argVal ) );
+          }
+          else {
+            sb.append( cmdInfo.params().getStr( FID_NAME ) + " : " + argVal.toString() );
+          }
+        }
+        return avStr( sb.toString() );
+      }
       return avStr( String.format( VIS_NAME_FORMAT, cmdInfo.nmName(), aEntity.cmd().cmdGwid().strid() ) );
     }
   };
@@ -133,7 +154,7 @@ public class CommandM5Model
           // display in details panel, no need name & description
           setNameAndDescription( DESCRIPTION_STR, TsLibUtils.EMPTY_STRING );
           ValedStringText.OPDEF_IS_MULTI_LINE.setValue( params(), AV_TRUE );
-          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 4 );
+          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 5 );
           setDefaultValue( IAtomicValue.NULL );
           setFlags( M5FF_DETAIL | M5FF_READ_ONLY );
 
@@ -152,21 +173,50 @@ public class CommandM5Model
           // String.format( VIS_DESCR_FORMAT, cmdInfo.description(), aEntity.cmd().argValues().toString() ) );
           // new version
           return avStr( String.format( VIS_DESCR_FORMAT, cmdInfo.description(),
-              aEntity.cmd().cmdGwid().canonicalString(), argsOptSet2ReadableString( aEntity.cmd().argValues() ) ) );
+              aEntity.cmd().cmdGwid().canonicalString(), argsOptSet2ReadableString( aEntity ) ) );
         }
       };
 
   @SuppressWarnings( "nls" )
-  private static String argsOptSet2ReadableString( IOptionSet aCmdArgs ) {
+  private String argsOptSet2ReadableString( IDtoCompletedCommand aEntity ) {
+
+    IOptionSet aCmdArgs = aEntity.cmd().argValues();
     if( aCmdArgs.isEmpty() ) {
       return COMMAND_HAS_NO_ARGUMENTS;
     }
     StringBuilder sb = new StringBuilder( COMMAND_ARGUMENTS );
     for( String argKey : aCmdArgs.keys() ) {
       String argValue = aCmdArgs.findByKey( argKey ).toString();
-      sb.append( " • " + argKey + " = " + argValue + "\n" );
+      sb.append( " • " + argKey + " = " + argValue + getArgValueDescr( aEntity, argKey, argValue ) + "\n" );
     }
     return sb.toString();
+  }
+
+  /**
+   * По значению аргумента выводим разумное описание, если оно есть
+   *
+   * @param aEntity - описание команды
+   * @param aArgKey - id аргумента
+   * @param aArgValue - значение аргумента
+   * @return человеческое пояснение, если есть строка форматирования или пустая строка
+   */
+  private String getArgValueDescr( IDtoCompletedCommand aEntity, String aArgKey, String aArgValue ) {
+    // Получаем объект команды
+    ISkObject skObject = conn.coreApi().objService().find( aEntity.cmd().cmdGwid().skid() );
+    // Получаем его класс
+    ISkClassInfo skClass = conn.coreApi().sysdescr().findClassInfo( skObject.classId() );
+    // Описание команды
+    IDtoCmdInfo cmdInfo = skClass.cmds().list().findByKey( aEntity.cmd().cmdGwid().propId() );
+    // формируем описание события
+    IDataDef cmdDef = cmdInfo.argDefs().findByKey( aArgKey );
+    // получаем значение аргумента
+    IAtomicValue argVal = aEntity.cmd().argValues().findByKey( cmdDef.id() );
+    // получаем строку форматирования
+    String formatStr = cmdDef.formatString();
+    if( formatStr != null ) {
+      return " ( " + AvUtils.printAv( formatStr, argVal ) + " ) ";
+    }
+    return TsLibUtils.EMPTY_STRING;
   }
 
   /**

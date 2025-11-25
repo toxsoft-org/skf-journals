@@ -15,6 +15,7 @@ import org.toxsoft.core.tsgui.valed.controls.av.*;
 import org.toxsoft.core.tsgui.valed.controls.basic.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.skf.journals.e4.uiparts.devel.*;
@@ -156,13 +157,54 @@ public class EventM5Model
       };
 
   protected String getDefltEventShortDescription( SkEvent aEvent ) {
-    // формируем в одной строке описание события
+    // dima 19.11.25 new version
+    IDtoEventInfo evInfo = getEvInfo( aEvent );
+    // формируем описание события
     StringBuilder sb = new StringBuilder();
-    for( String paramKey : aEvent.paramValues().keys() ) {
-      IAtomicValue paramVal = aEvent.paramValues().findByKey( paramKey );
-      sb.append( String.format( " %s = %s; ", paramKey, paramVal.toString() ) ); //$NON-NLS-1$
+    // отрабатываем ошибку когда описание события не совпадает с фактом события
+    if( !evInfo.paramDefs().isEmpty() ) {
+      if( !aEvent.paramValues().hasKey( evInfo.paramDefs().first().id() ) ) {
+        for( String evValKey : aEvent.paramValues().keys() ) {
+          if( sb.toString().length() > 0 ) {
+            sb.append( " | " );
+          }
+          sb.append( evValKey + " = " );
+          sb.append( aEvent.paramValues().getByKey( evValKey ).toString() );
+        }
+        return sb.toString();
+      }
+    }
+
+    for( IDataDef ed : evInfo.paramDefs() ) {
+      // получаем значение параметра
+      IAtomicValue paramVal = aEvent.paramValues().findByKey( ed.id() );
+      String paramDescr = ed.description();
+      // получаем строку форматирования
+      String formatStr = ed.formatString();
+      if( formatStr != null ) {
+        sb.append( AvUtils.printAv( formatStr, paramVal ) );
+      }
+      else {
+        sb.append( paramVal.toString() );
+      }
     }
     return sb.toString();
+    // old version
+    // формируем в одной строке описание события
+    // StringBuilder sb = new StringBuilder();
+    // for( String paramKey : aEvent.paramValues().keys() ) {
+    // IAtomicValue paramVal = aEvent.paramValues().findByKey( paramKey );
+    // sb.append( String.format( " %s = %s; ", paramKey, paramVal.toString() ) ); //$NON-NLS-1$
+    // }
+    // return sb.toString();
+  }
+
+  private IDtoEventInfo getEvInfo( SkEvent aEvent ) {
+    // Получаем его класс
+    ISkClassInfo skClass = conn.coreApi().sysdescr().findClassInfo( aEvent.eventGwid().classId() );
+    // Описание события
+    IDtoEventInfo evInfo = skClass.events().list().findByKey( aEvent.eventGwid().propId() );
+    return evInfo;
   }
 
   /**
@@ -176,7 +218,11 @@ public class EventM5Model
       setDefaultValue( IAtomicValue.NULL );
       setFlags( M5FF_DETAIL | M5FF_READ_ONLY );
       ValedStringText.OPDEF_IS_MULTI_LINE.setValue( params(), AV_TRUE );
-      params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 5 ); // fucking Windows remove 1 row
+      params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 5 ); // fucking
+                                                                        // Windows
+                                                                        // remove
+                                                                        // 1
+                                                                        // row
       setValedEditor( ValedAvStringText.FACTORY.factoryName() );
     }
 
@@ -192,16 +238,57 @@ public class EventM5Model
     }
   };
 
+  @SuppressWarnings( "nls" )
   protected String getDefltEventLongDescripion( SkEvent aEvent ) {
+    IDtoEventInfo evInfo = getEvInfo( aEvent );
+    // Получаем объект параметра
+    ISkObject attrObject = conn.coreApi().objService().find( aEvent.eventGwid().skid() );
     // формируем описание события
     StringBuilder sb = new StringBuilder();
-    sb.append( EV_PARAMS );
-
-    for( String paramKey : aEvent.paramValues().keys() ) {
-      IAtomicValue paramVal = aEvent.paramValues().findByKey( paramKey );
-      sb.append( String.format( " • %s = %s\n", paramKey, paramVal.toString() ) ); //$NON-NLS-1$
+    // изменилось значение параметра состояния резервирования
+    sb.append( String.format( EV_NAME_OBJ_PARAMS_FMT_STR, evInfo.nmName(), attrObject.description() ) );
+    // отрабатываем ошибку когда описание события не совпадает с фактом события
+    if( !evInfo.paramDefs().isEmpty() ) {
+      if( !aEvent.paramValues().hasKey( evInfo.paramDefs().first().id() ) ) {
+        for( String evValKey : aEvent.paramValues().keys() ) {
+          sb.append( " • " + evValKey + " : " );
+          sb.append( aEvent.paramValues().getByKey( evValKey ).toString() );
+          sb.append( "\n" );
+        }
+        return sb.toString();
+      }
     }
+    for( IDataDef ed : evInfo.paramDefs() ) {
+      // получаем значение параметра
+      IAtomicValue paramVal = aEvent.paramValues().findByKey( ed.id() );
+      String paramDescr = ed.description();
+      // получаем строку форматирования
+      String formatStr = ed.formatString();
+      sb.append( " • " + ed.id() + " : " );
+      sb.append( paramVal.toString() );
+      sb.append( " ( " );
+      if( formatStr != null ) {
+        sb.append( AvUtils.printAv( formatStr, paramVal ) );
+      }
+      else {
+        sb.append( paramDescr );
+      }
+      sb.append( " ) " );
+      sb.append( "\n" );
+    }
+
     return sb.toString();
+
+    // old version
+    // формируем описание события
+    // StringBuilder sb = new StringBuilder();
+    // sb.append( EV_PARAMS );
+    //
+    // for( String paramKey : aEvent.paramValues().keys() ) {
+    // IAtomicValue paramVal = aEvent.paramValues().findByKey( paramKey );
+    // sb.append( String.format( " • %s = %s\n", paramKey, paramVal.toString() ) ); //$NON-NLS-1$
+    // }
+    // return sb.toString();
   }
 
   /**

@@ -10,18 +10,19 @@ public interface ISkResources {
   /**
    * {@link EventM5Model},
    */
-  String EVENTS_LIST_TABLE_DESCR = Messages.getString( "EVENTS_LIST_TABLE_DESCR" ); //$NON-NLS-1$
-  String EVENTS_LIST_TABLE_NAME  = Messages.getString( "EVENTS_LIST_TABLE_NAME" );  //$NON-NLS-1$
-  String EVENT_SRC_COL_DESCR     = Messages.getString( "EVENT_SRC_COL_DESCR" );     //$NON-NLS-1$
-  String EVENT_SRC_COL_NAME      = Messages.getString( "EVENT_SRC_COL_NAME" );      //$NON-NLS-1$
-  String EVENT_TIME_COL_DESCR    = Messages.getString( "EVENT_TIME_COL_DESCR" );    //$NON-NLS-1$
-  String EVENT_TIME_COL_NAME     = Messages.getString( "EVENT_TIME_COL_NAME" );     //$NON-NLS-1$
-  String EVENT_NAME_COL_DESCR    = Messages.getString( "EVENT_NAME_COL_DESCR" );    //$NON-NLS-1$
-  String EVENT_NAME_COL_NAME     = Messages.getString( "EVENT_NAME_COL_NAME" );     //$NON-NLS-1$
-  String DESCRIPTION_STR         = Messages.getString( "DESCRIPTION_STR" );         //$NON-NLS-1$
-  String EV_DESCRIPTION          = Messages.getString( "EV_DESCRIPTION" );          //$NON-NLS-1$
-  String EV_PARAMS               = "параметры:\n";
-
+  String EVENTS_LIST_TABLE_DESCR    = Messages.getString( "EVENTS_LIST_TABLE_DESCR" ); //$NON-NLS-1$
+  String EVENTS_LIST_TABLE_NAME     = Messages.getString( "EVENTS_LIST_TABLE_NAME" );  //$NON-NLS-1$
+  String EVENT_SRC_COL_DESCR        = Messages.getString( "EVENT_SRC_COL_DESCR" );     //$NON-NLS-1$
+  String EVENT_SRC_COL_NAME         = Messages.getString( "EVENT_SRC_COL_NAME" );      //$NON-NLS-1$
+  String EVENT_TIME_COL_DESCR       = Messages.getString( "EVENT_TIME_COL_DESCR" );    //$NON-NLS-1$
+  String EVENT_TIME_COL_NAME        = Messages.getString( "EVENT_TIME_COL_NAME" );     //$NON-NLS-1$
+  String EVENT_NAME_COL_DESCR       = Messages.getString( "EVENT_NAME_COL_DESCR" );    //$NON-NLS-1$
+  String EVENT_NAME_COL_NAME        = Messages.getString( "EVENT_NAME_COL_NAME" );     //$NON-NLS-1$
+  String DESCRIPTION_STR            = Messages.getString( "DESCRIPTION_STR" );         //$NON-NLS-1$
+  String EV_DESCRIPTION             = Messages.getString( "EV_DESCRIPTION" );          //$NON-NLS-1$
+  String EV_PARAMS                  = "параметры:\n";
+  String EV_NAME_OBJ_PARAMS_FMT_STR = " Название: %s \n Объект: %s \n параметры: \n";
+  // ,ts.FormatString = "%Б[-|✔]"
   /**
    * {@link DialogConcerningEventsParams},
    */
@@ -82,6 +83,14 @@ public interface ISkResources {
   String VIS_NAME_COL_NAME        = Messages.getString( "VIS_NAME_COL_NAME" );        //$NON-NLS-1$
   String COMMAND_ARGUMENTS        = Messages.getString( "COMMAND_ARGUMENTS" );        //$NON-NLS-1$
   String COMMAND_HAS_NO_ARGUMENTS = Messages.getString( "COMMAND_HAS_NO_ARGUMENTS" ); //$NON-NLS-1$
+
+  String STR_ACKNOWLEDGE_AUTHOR  = "автор";
+  String STR_ACKNOWLEDGE_COMMENT = "текст";
+
+  /**
+   * {@link QuantJournalsMws},
+   */
+  String VALIDATION_FORMAT_STR = "%s, подтверждаю : %s [%s]";
 
   /**
    * {@link ObjectsTreeComposite},
