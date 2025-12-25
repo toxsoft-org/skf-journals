@@ -27,6 +27,7 @@ public interface ISkResources {
   // ,ts.FormatString = "%Б[-|✔]"
   String STR_SESSION_USER = " пользователь: ";
   String STR_IP_ADDRESS   = " IP: ";
+  String STR_SESSION      = " сессия: ";
 
   /**
    * {@link DialogConcerningEventsParams},
