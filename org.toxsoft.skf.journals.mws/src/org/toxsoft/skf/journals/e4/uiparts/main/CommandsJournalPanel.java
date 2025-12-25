@@ -22,6 +22,7 @@ import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.*;
 import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.skid.*;
@@ -138,16 +139,27 @@ public class CommandsJournalPanel
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
     try {
-      IList<IDtoCompletedCommand> queryCommands = queryEngine.query( interval, allCommandsParams() );
+      IList<IDtoCompletedCommand> queryCommands2 = queryEngine.query( interval, allCommandsParams() );
       LoggerUtils.defaultLogger().info( "queryAllCommands(): commandProvider.setItems( commands ). commands count = %d",
-          queryCommands.size() );
+          queryCommands2.size() );
+
+      IListEdit<IDtoCompletedCommand> queryCommands = new ElemArrayList<>();
+      IStringListEdit cmdIds = new StringArrayList();
+      for( IDtoCompletedCommand cmd : queryCommands2 ) {
+        String cmdId = cmd.cmd().instanceId();
+        if( !cmdIds.hasElem( cmdId ) ) {
+          cmdIds.add( cmdId );
+          queryCommands.add( cmd );
+        }
+      }
+
       if( queryCommands.size() > COMMAND_PANEL_COUNT_LIMIT ) {
         IList<IDtoCompletedCommand> newCommands = queryCommands.fetch( 0, COMMAND_PANEL_COUNT_LIMIT );
         ITimeInterval newInterval = new TimeInterval( newCommands.first().timestamp(), newCommands.last().timestamp() );
         String warn = String.format( STR_COMMAND_LIMIT, queryCommands.size(), COMMAND_PANEL_COUNT_LIMIT, newInterval );
         LoggerUtils.defaultLogger().warning( warn );
         TsDialogUtils.warn( getShell(), warn );
-        queryCommands = newCommands;
+        queryCommands = new ElemArrayList<>( newCommands );
       }
       IList<IDtoCompletedCommand> commands = queryCommands;
       display.syncExec( () -> commandProvider.items().setAll( commands ) );
@@ -202,7 +214,8 @@ public class CommandsJournalPanel
     ConcerningEventsParams retVal = new ConcerningEventsParams();
     for( ISkClassInfo classInfo : listNeededClasses() ) {
       // dima 10.11.25 оставляем только классы у которых нет наследников
-      if( classInfo.listSubclasses( false, false ).isEmpty() ) {
+      // if( classInfo.listSubclasses( false, false ).isEmpty() )
+      {
         IStringListEdit cmdsIds = new StringArrayList();
 
         for( IDtoCmdInfo cmd : classInfo.cmds().list() ) {
