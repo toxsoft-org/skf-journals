@@ -1,5 +1,7 @@
 package org.toxsoft.skf.journals.e4.uiparts.engine;
 
+import org.toxsoft.skf.journals.*;
+
 /**
  * Локализуемые ресурсы.
  *
@@ -23,6 +25,10 @@ public interface ISkResources {
   String EV_PARAMS                  = "параметры:\n";
   String EV_NAME_OBJ_PARAMS_FMT_STR = " Название: %s \n Объект: %s \n параметры: \n";
   // ,ts.FormatString = "%Б[-|✔]"
+  String STR_SESSION_USER = " пользователь: %s \n";
+  String STR_IP_ADDRESS   = " IP: %s \n";
+  String STR_SESSION      = " описание сессии: %s \n";
+
   /**
    * {@link DialogConcerningEventsParams},
    */
