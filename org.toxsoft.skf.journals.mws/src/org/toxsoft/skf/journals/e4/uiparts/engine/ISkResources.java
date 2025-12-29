@@ -25,10 +25,10 @@ public interface ISkResources {
   String EV_PARAMS                  = "параметры:\n";
   String EV_NAME_OBJ_PARAMS_FMT_STR = " Название: %s \n Объект: %s \n параметры: \n";
   // ,ts.FormatString = "%Б[-|✔]"
-  String STR_SESSION_USER = " пользователь: ";
-  String STR_IP_ADDRESS   = " IP: ";
-  String STR_SESSION      = " сессия: ";
-
+  String STR_SESSION_USER            = " пользователь: ";
+  String STR_IP_ADDRESS              = " IP: ";
+  String STR_SESSION                 = " сессия: ";
+  String USER_IP_FMT_STR             = "пользователь: %s, IP %s";
   /**
    * {@link DialogConcerningEventsParams},
    */
