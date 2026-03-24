@@ -35,6 +35,7 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.alarms.lib.*;
 import org.toxsoft.skf.journals.e4.uiparts.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.IJournalParamsPanel.*;
@@ -184,6 +185,10 @@ public class EventsJournalPanel
   IConcerningEventsParams allEventsParams() {
     ConcerningEventsParams retVal = new ConcerningEventsParams();
     for( ISkClassInfo classInfo : listNeededClasses() ) {
+      // dima 24.03.26 аларм и его наследники игнорируем, для них отдельный журнал
+      if( classInfo.isAssignableTo( "sk.Alarm" ) ) { //$NON-NLS-1$
+        continue;
+      }
       // dima 10.11.25 оставляем только классы у которых нет наследников
       if( classInfo.listSubclasses( false, false ).isEmpty() ) {
 
