@@ -140,7 +140,7 @@ public class CommandsJournalPanel
     ITimeInterval interval = paramsPanel.interval();
     try {
       IList<IDtoCompletedCommand> queryCommands2 = queryEngine.query( interval, allCommandsParams() );
-      LoggerUtils.defaultLogger().info( "queryAllCommands(): commandProvider.setItems( commands ). commands count = %d",
+      LoggerUtils.info( "queryAllCommands(): commandProvider.setItems( commands ). commands count = %d",
           queryCommands2.size() );
 
       IListEdit<IDtoCompletedCommand> queryCommands = new ElemArrayList<>();
@@ -157,7 +157,7 @@ public class CommandsJournalPanel
         IList<IDtoCompletedCommand> newCommands = queryCommands.fetch( 0, COMMAND_PANEL_COUNT_LIMIT );
         ITimeInterval newInterval = new TimeInterval( newCommands.first().timestamp(), newCommands.last().timestamp() );
         String warn = String.format( STR_COMMAND_LIMIT, queryCommands.size(), COMMAND_PANEL_COUNT_LIMIT, newInterval );
-        LoggerUtils.defaultLogger().warning( warn );
+        LoggerUtils.warning( warn );
         TsDialogUtils.warn( getShell(), warn );
         queryCommands = new ElemArrayList<>( newCommands );
       }
@@ -168,7 +168,7 @@ public class CommandsJournalPanel
     catch( Throwable e ) {
       String error = (e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
       TsDialogUtils.error( getShell(), error );
-      LoggerUtils.defaultLogger().error( e );
+      LoggerUtils.error( e );
     }
   }
 
@@ -186,13 +186,13 @@ public class CommandsJournalPanel
         selEvents.addItem( item );
       }
       IList<IDtoCompletedCommand> queryCommands = queryEngine.query( interval, selEvents );
-      LoggerUtils.defaultLogger().info(
-          "querySelectedCommands(): commandProvider.setItems( commands ). commands count = %d", queryCommands.size() );
+      LoggerUtils.info( "querySelectedCommands(): commandProvider.setItems( commands ). commands count = %d",
+          queryCommands.size() );
       if( queryCommands.size() > COMMAND_PANEL_COUNT_LIMIT ) {
         IList<IDtoCompletedCommand> newCommands = queryCommands.fetch( 0, COMMAND_PANEL_COUNT_LIMIT );
         ITimeInterval newInterval = new TimeInterval( newCommands.first().timestamp(), newCommands.last().timestamp() );
         String warn = String.format( STR_COMMAND_LIMIT, queryCommands.size(), COMMAND_PANEL_COUNT_LIMIT, newInterval );
-        LoggerUtils.defaultLogger().warning( warn );
+        LoggerUtils.warning( warn );
         TsDialogUtils.warn( getShell(), warn );
         queryCommands = newCommands;
       }
@@ -203,7 +203,7 @@ public class CommandsJournalPanel
     catch( Throwable e ) {
       String error = (e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
       TsDialogUtils.error( getShell(), error );
-      LoggerUtils.defaultLogger().error( e );
+      LoggerUtils.error( e );
     }
   }
 
@@ -274,7 +274,7 @@ public class CommandsJournalPanel
       JasperReportDialog.showPrint( printContext, jasperPrint );
     }
     catch( Exception ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
       TsDialogUtils.error( getShell(), ex );
     }
 

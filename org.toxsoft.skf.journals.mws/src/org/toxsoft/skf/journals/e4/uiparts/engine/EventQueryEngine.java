@@ -2,27 +2,23 @@ package org.toxsoft.skf.journals.e4.uiparts.engine;
 
 import static org.toxsoft.skf.journals.e4.uiparts.engine.ISkResources.*;
 
-import org.eclipse.swt.widgets.Shell;
-import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
-import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
-import org.toxsoft.core.tslib.bricks.threadexec.ITsThreadExecutor;
+import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.bricks.ctx.*;
+import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
-import org.toxsoft.core.tslib.bricks.time.impl.TimeUtils;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.IListEdit;
-import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.gw.gwid.GwidList;
+import org.toxsoft.core.tslib.bricks.time.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.uskat.core.ISkCoreApi;
-import org.toxsoft.uskat.core.api.evserv.SkEvent;
-import org.toxsoft.uskat.core.api.hqserv.ESkQueryState;
-import org.toxsoft.uskat.core.api.hqserv.ISkQueryRawHistory;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
-import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.evserv.*;
+import org.toxsoft.uskat.core.api.hqserv.*;
+import org.toxsoft.uskat.core.gui.conn.*;
+import org.toxsoft.uskat.core.gui.glib.query.*;
+import org.toxsoft.uskat.core.impl.*;
 
 /**
  * Реализация движка {@link IQueryEngine} для событий.
@@ -66,9 +62,9 @@ public class EventQueryEngine
       ConcerningEventsItem item = (ConcerningEventsItem)aParams.items().get( i );
       gwids.addAll( item.gwids( true, coreApi ) );
     }
-    LoggerUtils.defaultLogger().info( "EventQueryEngine.query(...): gwids size = %d", gwids.size() );
+    LoggerUtils.info( "EventQueryEngine.query(...): gwids size = %d", gwids.size() );
     for( Gwid gwid : gwids ) {
-      LoggerUtils.defaultLogger().info( "EventQueryEngine.query(...): gwid = %s", gwid.asString() );
+      LoggerUtils.info( "EventQueryEngine.query(...): gwid = %s", gwid.asString() );
     }
 
     // Исполнитель запросов в одном потоке

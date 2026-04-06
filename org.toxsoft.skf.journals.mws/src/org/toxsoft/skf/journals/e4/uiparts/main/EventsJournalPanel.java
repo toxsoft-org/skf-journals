@@ -35,7 +35,6 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.skf.alarms.lib.*;
 import org.toxsoft.skf.journals.e4.uiparts.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.*;
 import org.toxsoft.skf.journals.e4.uiparts.engine.IJournalParamsPanel.*;
@@ -230,7 +229,7 @@ public class EventsJournalPanel
     // new ProgressMonitorDialog( getShell() ).run( true, true, new XlsExportRunner() );
     // }
     // catch( Exception e ) {
-    // LoggerUtils.errorLogger().error( e );
+    // LoggerUtils.error( e );
     // TsDialogUtils.error( getShell(), e );
     // }
     // }
@@ -287,7 +286,7 @@ public class EventsJournalPanel
       JasperReportDialog.showPrint( printContext, jasperPrint );
     }
     catch( Exception ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
       TsDialogUtils.error( getShell(), ex );
     }
 
@@ -298,27 +297,26 @@ public class EventsJournalPanel
     Display display = getShell().getDisplay();
     ITimeInterval interval = paramsPanel.interval();
     try {
-      LoggerUtils.defaultLogger().info( "queryAllEvents(): queryEngine.query( interval, allEventsParams() )" );
+      LoggerUtils.info( "queryAllEvents(): queryEngine.query( interval, allEventsParams() )" );
       IList<SkEvent> queryEvents = queryEngine.query( interval, allEventsParams() );
-      LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.setItems( events ). events count = %d",
-          queryEvents.size() );
+      LoggerUtils.info( "queryAllEvents(): eventProvider.setItems( events ). events count = %d", queryEvents.size() );
       if( queryEvents.size() > EVENT_PANEL_COUNT_LIMIT ) {
         IList<SkEvent> newEvents = queryEvents.fetch( 0, EVENT_PANEL_COUNT_LIMIT );
         ITimeInterval newInterval = new TimeInterval( newEvents.first().timestamp(), newEvents.last().timestamp() );
         String warn = String.format( STR_EVENTS_LIMIT, queryEvents.size(), EVENT_PANEL_COUNT_LIMIT, newInterval );
-        LoggerUtils.defaultLogger().warning( warn );
+        LoggerUtils.warning( warn );
         TsDialogUtils.warn( getShell(), warn );
         queryEvents = newEvents;
       }
       IList<SkEvent> events = queryEvents;
       display.syncExec( () -> eventProvider.setItems( events ) );
-      LoggerUtils.defaultLogger().info( "queryAllEvents(): panel.refresh()" );
+      LoggerUtils.info( "queryAllEvents(): panel.refresh()" );
       display.syncExec( () -> panel.refresh() );
     }
     catch( Throwable e ) {
       String error = (e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
       TsDialogUtils.error( getShell(), error );
-      LoggerUtils.defaultLogger().error( e );
+      LoggerUtils.error( e );
     }
   }
 
@@ -335,27 +333,26 @@ public class EventsJournalPanel
         }
         selEvents.addItem( item );
       }
-      LoggerUtils.defaultLogger().info( "querySelectedEvents(): queryEngine.query( interval, selEvents )" );
+      LoggerUtils.info( "querySelectedEvents(): queryEngine.query( interval, selEvents )" );
       IList<SkEvent> queryEvents = queryEngine.query( interval, selEvents );
-      LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.setItems( events ). events count = %d",
-          queryEvents.size() );
+      LoggerUtils.info( "queryAllEvents(): eventProvider.setItems( events ). events count = %d", queryEvents.size() );
       if( queryEvents.size() > EVENT_PANEL_COUNT_LIMIT ) {
         IList<SkEvent> newEvents = queryEvents.fetch( 0, EVENT_PANEL_COUNT_LIMIT );
         ITimeInterval newInterval = new TimeInterval( newEvents.first().timestamp(), newEvents.last().timestamp() );
         String warn = String.format( STR_EVENTS_LIMIT, queryEvents.size(), EVENT_PANEL_COUNT_LIMIT, newInterval );
-        LoggerUtils.defaultLogger().warning( warn );
+        LoggerUtils.warning( warn );
         TsDialogUtils.warn( getShell(), warn );
         queryEvents = newEvents;
       }
       IList<SkEvent> events = queryEvents;
       display.syncExec( () -> eventProvider.setItems( events ) );
-      LoggerUtils.defaultLogger().info( "querySelectedEvents(): panel.refresh()" );
+      LoggerUtils.info( "querySelectedEvents(): panel.refresh()" );
       display.syncExec( () -> panel.refresh() );
     }
     catch( Throwable e ) {
       String error = (e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
       TsDialogUtils.error( getShell(), error );
-      LoggerUtils.defaultLogger().error( e );
+      LoggerUtils.error( e );
     }
   }
 
@@ -431,25 +428,25 @@ public class EventsJournalPanel
 
     // @Override
     // public void fireItemByIndexChangeEvent( int aIndex ) {
-    // LoggerUtils.defaultLogger().info( "fireItemByIndexChangeEvent" );
+    // LoggerUtils.info( "fireItemByIndexChangeEvent" );
     // super.fireItemByIndexChangeEvent( aIndex );
     // }
     //
     // @Override
     // public void fireItemByRefChangeEvent( Object aItem ) {
-    // LoggerUtils.defaultLogger().info( "fireItemByRefChangeEvent" );
+    // LoggerUtils.info( "fireItemByRefChangeEvent" );
     // super.fireItemByRefChangeEvent( aItem );
     // }
     //
     // @Override
     // protected void fireChangedEvent( ECrudOp aOp, Object aItem ) {
-    // LoggerUtils.defaultLogger().info( "fireChangedEvent" );
+    // LoggerUtils.info( "fireChangedEvent" );
     // super.fireChangedEvent( aOp, aItem );
     // }
     //
     // @Override
     // public void fireBatchChangeEvent() {
-    // LoggerUtils.defaultLogger().info( "fireBatchChangeEvent" );
+    // LoggerUtils.info( "fireBatchChangeEvent" );
     // super.fireBatchChangeEvent();
     // }
 

@@ -52,7 +52,7 @@ public class JournalsPanel
       }
     }
     catch( TsException ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
 
     try {
@@ -69,7 +69,7 @@ public class JournalsPanel
       }
     }
     catch( TsException ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
 
     try {
@@ -87,7 +87,7 @@ public class JournalsPanel
       }
     }
     catch( TsException ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
   }
 
