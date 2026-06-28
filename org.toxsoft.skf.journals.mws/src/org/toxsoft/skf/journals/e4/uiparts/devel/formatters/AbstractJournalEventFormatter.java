@@ -9,7 +9,12 @@ import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 
-abstract class AbstractJournalEventFormatter
+/**
+ * Базовый класс для форматеров событий
+ *
+ * @author dima
+ */
+public abstract class AbstractJournalEventFormatter
     implements ISkModJournalEventFormatter {
 
   @Override
