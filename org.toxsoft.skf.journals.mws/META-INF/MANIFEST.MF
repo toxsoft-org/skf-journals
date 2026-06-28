@@ -9,6 +9,7 @@ Export-Package: org.toxsoft.skf.journals,
  org.toxsoft.skf.journals.e4.addons,
  org.toxsoft.skf.journals.e4.uiparts,
  org.toxsoft.skf.journals.e4.uiparts.devel,
+ org.toxsoft.skf.journals.e4.uiparts.devel.formatters,
  org.toxsoft.skf.journals.e4.uiparts.engine,
  org.toxsoft.skf.journals.e4.uiparts.main
 Require-Bundle: jakarta.inject.jakarta.inject-api,
